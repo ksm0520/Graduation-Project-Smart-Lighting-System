@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const MusicScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>🏠 전원 제어 메인 화면</Text>
+      <Text style={styles.text}>🏠 음악 </Text>
     </View>
   );
 };
