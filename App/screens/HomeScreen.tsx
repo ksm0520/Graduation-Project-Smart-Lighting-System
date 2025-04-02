@@ -28,11 +28,11 @@ export default function HomeScreen() {
 
   return (
     <ImageBackground
-      source={Background}
-      resizeMode="cover"
-      style={{ height: screenHeight }}
-      className="flex-1 w-full"
-    >
+    source={Background}
+    resizeMode="cover"
+    style={{ flex: 1 }}
+    className="w-full"
+  >
       {/* 설정 아이콘 */}
       <View className="absolute top-10 left-5 z-20">
         <Pressable onPress={() => setMenuOpen(!menuOpen)}>
@@ -57,16 +57,12 @@ export default function HomeScreen() {
           </Pressable>
         </View>
       )}
-
-      {/* 버튼을 가로세로 중앙에 */}
-      <View className="flex-1 justify-center items-center z-10">
-        <Pressable
-          onPress={() => setIsOn(!isOn)}
-          className="active:scale-95 transition duration-200"
-        >
+      {/* 버튼을 가로세로 중앙에 배치 (Tailwind 제거하고 기본 스타일 사용) */}
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={() => setIsOn(!isOn)}>
           <Image
             source={isOn ? offBT : onBT}
-            className="w-40 h-40"
+            style={styles.buttonImage}
             resizeMode="contain"
           />
         </Pressable>
@@ -79,5 +75,14 @@ const styles = StyleSheet.create({
   menuText: {
     color: 'white',
     fontSize: 16,
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonImage: {
+    width: 160,
+    height: 160,
   },
 });
