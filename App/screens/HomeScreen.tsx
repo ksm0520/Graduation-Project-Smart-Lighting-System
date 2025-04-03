@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   View,
+  Animated,
   Pressable,
   Image,
   ImageBackground,
@@ -8,6 +9,7 @@ import {
   Dimensions,
   StyleSheet,
 } from 'react-native';
+import { useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -26,6 +28,18 @@ export default function HomeScreen() {
 
   const screenHeight = Dimensions.get('window').height;
 
+  // 컴포넌트 내부에 추가 (menuOpen 위에)
+const dropdownAnim = useRef(new Animated.Value(0)).current;
+
+useEffect(() => {
+  Animated.timing(dropdownAnim, {
+    toValue: menuOpen ? 1 : 0,
+    duration: 200,
+    useNativeDriver: true,
+  }).start();
+}, [menuOpen]);
+
+
   return (
     <ImageBackground
     source={Background}
@@ -41,22 +55,37 @@ export default function HomeScreen() {
       </View>
 
       {/* 드롭다운 메뉴 */}
-      {menuOpen && (
-        <View className="absolute top-20 left-5 bg-black/70 p-4 rounded-lg space-y-2 z-20">
-          <Pressable onPress={() => navigation.navigate('LightControl')}>
-            <Text style={styles.menuText}>Light Control</Text>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate('Music')}>
-            <Text style={styles.menuText}>Music</Text>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate('Routine')}>
-            <Text style={styles.menuText}>Routine</Text>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate('ShareQR')}>
-            <Text style={styles.menuText}>Share QR</Text>
-          </Pressable>
-        </View>
-      )}
+      <Animated.View
+  pointerEvents={menuOpen ? 'auto' : 'none'}
+  style={[
+    {
+      opacity: dropdownAnim,
+      transform: [
+        {
+          translateY: dropdownAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [-20, 0],
+          }),
+        },
+      ],
+    },
+    styles.dropdown,
+  ]}
+>
+  <Pressable onPress={() => navigation.navigate('LightControl')}>
+    <Text style={styles.menuText}>Light Control</Text>
+  </Pressable>
+  <Pressable onPress={() => navigation.navigate('Music')}>
+    <Text style={styles.menuText}>Music</Text>
+  </Pressable>
+  <Pressable onPress={() => navigation.navigate('Routine')}>
+    <Text style={styles.menuText}>Routine</Text>
+  </Pressable>
+  <Pressable onPress={() => navigation.navigate('ShareQR')}>
+    <Text style={styles.menuText}>Share QR</Text>
+  </Pressable>
+</Animated.View>
+
       {/* 버튼을 가로세로 중앙에 배치 (Tailwind 제거하고 기본 스타일 사용) */}
       <View style={styles.buttonContainer}>
         <Pressable onPress={() => setIsOn(!isOn)}>
@@ -85,4 +114,15 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
   },
+  dropdown: {
+    position: 'absolute',
+    top: 80,
+    left: 20,
+    backgroundColor: 'rgba(0,0,0,0.7)',
+    padding: 16,
+    borderRadius: 12,
+    zIndex: 20,
+    gap: 10,
+  },
+  
 });
