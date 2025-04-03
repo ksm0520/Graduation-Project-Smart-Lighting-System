@@ -87,14 +87,27 @@ useEffect(() => {
 </Animated.View>
 
       {/* 버튼을 가로세로 중앙에 배치 (Tailwind 제거하고 기본 스타일 사용) */}
-      <View style={styles.buttonContainer}>
-        <Pressable onPress={() => setIsOn(!isOn)}>
-          <Image
-            source={isOn ? offBT : onBT}
-            style={styles.buttonImage}
-            resizeMode="contain"
-          />
-        </Pressable>
+        <View style={styles.buttonContainer}>
+          <Pressable
+      onPress={() => setIsOn(!isOn)}
+      style={({ pressed }) => [
+        {
+          transform: [{ scale: pressed ? 0.95 : 1 }],
+          borderRadius: 100,
+          borderWidth: 2,
+          borderColor: 'black',
+          padding: 10,
+          backgroundColor: pressed ? 'rgba(255,255,255,0.1)' : 'transparent',
+        },
+      ]}
+    >
+      <Image
+        source={isOn ? offBT : onBT}
+        style={styles.buttonImage}
+        resizeMode="contain"
+      />
+    </Pressable>
+
       </View>
     </ImageBackground>
   );
