@@ -106,6 +106,7 @@ useEffect(() => {
       {/* 버튼을 가로세로 중앙에 배치 (Tailwind 제거하고 기본 스타일 사용) */}
         <View style={styles.buttonContainer}>
           <Pressable
+          
       onPress={() => setIsOn(!isOn)}
       style={({ pressed }) => [
         {
