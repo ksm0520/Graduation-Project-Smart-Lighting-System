@@ -30,14 +30,17 @@ export default function HomeScreen() {
 
   // 컴포넌트 내부에 추가 (menuOpen 위에)
 const dropdownAnim = useRef(new Animated.Value(0)).current;
+const dropdownBg = 'rgba(30, 64, 175, 0.7)';
 
 useEffect(() => {
-  Animated.timing(dropdownAnim, {
+  Animated.spring(dropdownAnim, {
     toValue: menuOpen ? 1 : 0,
-    duration: 200,
     useNativeDriver: true,
+    speed: 1,
+    bounciness: 80, // 튕김 효과
   }).start();
 }, [menuOpen]);
+
 
 
   return (
@@ -64,25 +67,39 @@ useEffect(() => {
         {
           translateY: dropdownAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: [-20, 0],
+            outputRange: [-30, 0], // 위에서 아래로 살짝 내려오기
           }),
         },
       ],
     },
-    styles.dropdown,
+    {
+      position: 'absolute',
+      top: 180,
+      left: '10%',
+      width: '80%',
+      backgroundColor: dropdownBg,
+      padding: 16,
+      paddingTop: 80,
+      paddingBottom: 80,
+      borderRadius: 12,
+      zIndex: 20,
+      gap: 20,
+      
+      alignItems: 'center', // 텍스트 가운데 정렬
+    },
   ]}
 >
   <Pressable onPress={() => navigation.navigate('LightControl')}>
-    <Text style={styles.menuText}>Light Control</Text>
+    <Text style={{ color: '#FF6363', fontSize: 20, fontWeight: 'bold' }}>Light Control</Text>
   </Pressable>
   <Pressable onPress={() => navigation.navigate('Music')}>
-    <Text style={styles.menuText}>Music</Text>
+    <Text style={{ color: '#63B3ED', fontSize: 20, fontWeight: 'bold' }}>Music</Text>
   </Pressable>
   <Pressable onPress={() => navigation.navigate('Routine')}>
-    <Text style={styles.menuText}>Routine</Text>
+    <Text style={{ color: '#68D391', fontSize: 20, fontWeight: 'bold' }}>Routine</Text>
   </Pressable>
   <Pressable onPress={() => navigation.navigate('ShareQR')}>
-    <Text style={styles.menuText}>Share QR</Text>
+    <Text style={{ color: '#F6E05E', fontSize: 20, fontWeight: 'bold' }}>Share QR</Text>
   </Pressable>
 </Animated.View>
 
@@ -116,7 +133,7 @@ useEffect(() => {
 const styles = StyleSheet.create({
   menuText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 25,
   },
   buttonContainer: {
     flex: 1,
@@ -129,13 +146,13 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     position: 'absolute',
-    top: 80,
-    left: 20,
+    top: 160,
+    left: 18,
     backgroundColor: 'rgba(0,0,0,0.7)',
-    padding: 16,
-    borderRadius: 12,
+    padding: 90,
+    borderRadius: 50,
     zIndex: 20,
-    gap: 10,
+    gap: 20,
   },
   
 });
