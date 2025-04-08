@@ -14,10 +14,13 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/StackNavigator';
+import { Audio } from 'expo-av';
 
 import Background from '../assets/img/Background.png';
 import onBT from '../assets/img/onBT.png';
 import offBT from '../assets/img/offBT.png';
+import BtS from '../assets/sounds/BtS.mp3';
+
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -31,6 +34,15 @@ export default function HomeScreen() {
   // 컴포넌트 내부에 추가 (menuOpen 위에)
 const dropdownAnim = useRef(new Animated.Value(0)).current;
 const dropdownBg = 'rgba(30, 64, 175, 0.7)';
+
+const playSound = async () => {
+  try {
+    const { sound } = await Audio.Sound.createAsync(BtS);
+    await sound.playAsync();
+  } catch (error) {
+    console.log('Sound playback error:', error);
+  }
+};
 
 useEffect(() => {
   Animated.spring(dropdownAnim, {
@@ -105,26 +117,29 @@ useEffect(() => {
 
       {/* 버튼을 가로세로 중앙에 배치 (Tailwind 제거하고 기본 스타일 사용) */}
         <View style={styles.buttonContainer}>
-          <Pressable
-          
-      onPress={() => setIsOn(!isOn)}
-      style={({ pressed }) => [
-        {
-          transform: [{ scale: pressed ? 0.95 : 1 }],
-          borderRadius: 100,
-          borderWidth: 2,
-          borderColor: 'black',
-          padding: 10,
-          backgroundColor: pressed ? 'rgba(255,255,255,0.1)' : 'transparent',
-        },
-      ]}
-    >
-      <Image
-        source={isOn ? offBT : onBT}
-        style={styles.buttonImage}
-        resizeMode="contain"
-      />
-    </Pressable>
+        <Pressable
+  onPress={() => {
+    setIsOn(!isOn);
+    playSound(); // 🔊 버튼 누를 때 사운드
+  }}
+  style={({ pressed }) => [
+    {
+      transform: [{ scale: pressed ? 0.9 : 1 }],
+      borderRadius: 100,
+      borderWidth: 2,
+      borderColor: pressed ? '#4A90E2' : 'black', // 누를 때 테두리 색 변경
+      padding: pressed ? 14 : 10, // 누를 때 살짝 커짐
+      backgroundColor: pressed ? 'rgba(255,255,255,0.2)' : 'transparent',
+    },
+  ]}
+>
+  <Image
+    source={isOn ? offBT : onBT}
+    style={styles.buttonImage}
+    resizeMode="contain"
+  />
+</Pressable>
+
 
       </View>
     </ImageBackground>
