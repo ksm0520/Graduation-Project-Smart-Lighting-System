@@ -1,60 +1,28 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import ColorPicker from 'react-native-wheel-color-picker';
 
-// 타입 오류 우회를 위해 require + any 사용
-const WheelColorPicker = require('react-native-wheel-color-picker').WheelColorPicker as any;
-
-export default function LightControlScreen() {
-  const [color, setColor] = useState('#00FFFF');
+const App: React.FC = () => {
+  const [color, setColor] = useState<string>('#00FFFF');
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Choose Light Color</Text>
-
-      <WheelColorPicker
-        initialColor={color}
-        onColorChangeComplete={setColor}
-        style={styles.colorPicker}
-        thumbStyle={{ height: 30, width: 30, borderRadius: 15 }}
-      />
-
-      <TextInput
-        value={color}
-        onChangeText={setColor}
-        style={[styles.input, { borderColor: color }]}
-        placeholder="#RRGGBB"
-        placeholderTextColor="#aaa"
-        autoCapitalize="none"
+      <Text style={styles.label}>선택한 색상: {color}</Text>
+      <ColorPicker
+        color={color}
+        onColorChange={(selectedColor: string) => setColor(selectedColor)}
+        thumbSize={30}
+        sliderSize={30}
+        noSnap={true}
+        row={false}
       />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000', // 어두운 배경
-  },
-  label: {
-    fontSize: 20,
-    marginBottom: 20,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  colorPicker: {
-    width: 300,
-    height: 300,
-    marginBottom: 30,
-  },
-  input: {
-    width: 160,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-    color: '#000',
-  },
+  container: { flex: 1, padding: 24, justifyContent: 'center' },
+  label: { fontSize: 18, marginBottom: 20 },
 });
+
+export default App;
