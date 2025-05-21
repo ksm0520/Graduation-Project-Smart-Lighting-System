@@ -20,6 +20,7 @@ import Background from '../assets/img/Background.png';
 import onBT from '../assets/img/onBT.png';
 import offBT from '../assets/img/offBT.png';
 import BtS from '../assets/sounds/BtS.mp3';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -118,21 +119,39 @@ useEffect(() => {
       {/* 버튼을 가로세로 중앙에 배치 (Tailwind 제거하고 기본 스타일 사용) */}
         <View style={styles.buttonContainer}>
         <Pressable
-  onPress={() => {
+          onPress={() => {
     setIsOn(!isOn);
     playSound(); // 🔊 버튼 누를 때 사운드
   }}
   style={({ pressed }) => [
     {
-      transform: [{ scale: pressed ? 0.9 : 1 }],
-      borderRadius: 100,
-      borderWidth: 2,
-      borderColor: pressed ? '#4A90E2' : 'black', // 누를 때 테두리 색 변경
-      padding: pressed ? 14 : 10, // 누를 때 살짝 커짐
-      backgroundColor: pressed ? 'rgba(255,255,255,0.2)' : 'transparent',
+      width: 140,
+      height: 140,
+      borderRadius: 200,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: pressed ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.05)',
+      
+      borderColor: '#61dafb',
+      shadowColor: '#61dafb',
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.8,
+      shadowRadius: 20,
+
     },
   ]}
 >
+    <LinearGradient
+    colors={['#ffffff20', '#ffffff05']}
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderRadius: 90,
+    }}
+  />
   <Image
     source={isOn ? offBT : onBT}
     style={styles.buttonImage}
@@ -157,8 +176,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonImage: {
-    width: 160,
-    height: 160,
+    width: 140,
+    height: 140,
   },
   dropdown: {
     position: 'absolute',

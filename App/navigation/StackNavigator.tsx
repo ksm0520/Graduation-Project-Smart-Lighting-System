@@ -20,17 +20,11 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// 공통 header 스타일
-const headerStyle = {
-  backgroundColor: 'rgba(180, 225, 255, 0.4)',
-  elevation: 0,
-  shadowOpacity: 0,
-  borderBottomWidth: 0,
-};
+
 
 const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShown: true,
-  headerStyle: headerStyle as any, // ✅ 강제 타입 무시
+ 
   headerTitleAlign: 'center',
   headerTintColor: '#000000',
 };
