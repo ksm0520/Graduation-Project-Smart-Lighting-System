@@ -1,4 +1,4 @@
-// 완성본: 알람 버튼 우주 색상 테마 반영
+// 완성본 수정: ColorPicker와 HEX 입력란 겹침 해결 및 순서 조정 완료
 
 import React, { useState } from 'react';
 import {
@@ -75,40 +75,43 @@ const LightControlScreen: React.FC = () => {
         <ScrollView contentContainerStyle={styles.container}>
           <Text style={styles.title}>🌈 LED 색상 조절</Text>
 
-          <View style={{ width: '100%', height: 200 }}>
-            <ColorPicker
-              color={color}
-              onColorChange={(newColor) => {
-                setColor(newColor);
-                setHexInput(newColor);
-              }}
-              thumbSize={30}
-              sliderSize={30}
-              noSnap
-              row={false}
-            />
+          <View style={styles.card}>
+            <View style={{ width: '100%', height: 200, marginBottom: 75 }}>
+              <ColorPicker
+                color={color}
+                onColorChange={(newColor) => {
+                  setColor(newColor);
+                  setHexInput(newColor);
+                }}
+                thumbSize={30}
+                sliderSize={30}
+                noSnap
+                row={false}
+              />
+            </View>
           </View>
 
-
-          <View style={styles.inputSection}>
-            <Text style={styles.label}>HEX 코드 입력</Text>
-            <TextInput
-              style={styles.hexInput}
-              value={hexInput}
-              onChangeText={(value) => {
-                setHexInput(value);
-                if (/^#?[0-9A-Fa-f]{6}$/.test(value)) {
-                  setColor(value.startsWith('#') ? value : `#${value}`);
-                }
-              }}
-              maxLength={7}
-              placeholder="#RRGGBB"
-              placeholderTextColor="#999"
-              autoCapitalize="none"
-            />
+          <View style={[styles.card, { marginTop: -16 }]}> {/* HEX 코드 입력을 별 카드로 따로 분리 */}
+            <View style={styles.inputSection}>
+              <Text style={styles.label}>HEX 코드 입력</Text>
+              <TextInput
+                style={styles.hexInput}
+                value={hexInput}
+                onChangeText={(value) => {
+                  setHexInput(value);
+                  if (/^#?[0-9A-Fa-f]{6}$/.test(value)) {
+                    setColor(value.startsWith('#') ? value : `#${value}`);
+                  }
+                }}
+                maxLength={7}
+                placeholder="#RRGGBB"
+                placeholderTextColor="#999"
+                autoCapitalize="none"
+              />
+            </View>
           </View>
 
-          <Text style={[styles.title, { marginTop: 40 }]}>⏰ 알람 설정</Text>
+          <Text style={[styles.title, { marginTop: 20 }]}>⏰ 알람 설정</Text>
 
           <View style={styles.card}>
             <View style={styles.timeInputRow}>
@@ -163,7 +166,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 24,
   },
-  inputSection: { alignItems: 'center', marginBottom: 30 },
+  inputSection: { alignItems: 'center', marginBottom: 10 },
   label: { color: 'white', marginBottom: 6, fontSize: 14 },
   hexInput: {
     width: 150,
