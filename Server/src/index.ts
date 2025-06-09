@@ -27,3 +27,7 @@ app.use('/qr', qrRoutes);           // 루틴 QR 공유
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });
+
+app.get('/', (req, res) => {
+  res.send('✅ API 서버 정상 작동 중');
+});
