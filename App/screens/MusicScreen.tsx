@@ -42,10 +42,10 @@ const MusicScreen = () => {
     fetchStatus();
   }, []);
 
-  const playMusicHandler = async (song: string) => {
+  const playMusicHandler = async (mode: string) => {
     try {
-      await playMusic(song);
-      setCurrentSong(song);
+      await playMusic(mode);
+      setCurrentSong(mode);
     } catch (error) {
       console.error('음악 재생 실패:', error);
     }
