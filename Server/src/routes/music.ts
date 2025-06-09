@@ -16,11 +16,11 @@ router.get('/', async (req, res) => {
 
 // 🎵 음악 재생 (POST /music/play)
 router.post('/play', async (req, res) => {
-  const { song } = req.body;
+  const { mode } = req.body;
   try {
     await db.query(
-      'UPDATE music SET status = $1, song = $2 WHERE id = (SELECT id FROM music ORDER BY id DESC LIMIT 1)',
-      ['on', song]
+      'UPDATE music SET status = $1, mode = $2 WHERE id = (SELECT id FROM music ORDER BY id DESC LIMIT 1)',
+      ['on', mode]
     );
     res.status(200).json({ success: true });
   } catch (err) {
