@@ -16,7 +16,7 @@ import {
 import ColorPicker from 'react-native-wheel-color-picker';
 import Background from '../assets/img/Background.png';
 import Slider from '@react-native-community/slider';
-import { setLEDColor, setLEDBrightness, addAlarm } from '../api/api';
+import { setLEDColor, setLEDBrightness, setLEDStatus, addAlarm } from '../api/api';
 
 
 interface Alarm {
@@ -65,7 +65,7 @@ const LightControlScreen: React.FC = () => {
     }, timeout);
 
     try {
-      await addAlarm(hourNum, minNum);
+      await addAlarm({ hour: hourNum, minute: minNum });
       setAlarms((prev) => [...prev, { hour, minute, id }]);
       setHour('');
       setMinute('');
