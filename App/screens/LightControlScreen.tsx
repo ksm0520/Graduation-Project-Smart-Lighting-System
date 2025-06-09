@@ -15,6 +15,9 @@ import {
 } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import Background from '../assets/img/Background.png';
+import Slider from '@react-native-community/slider';
+import { setLEDColor, setLEDBrightness, addAlarm } from '../api/api';
+
 
 interface Alarm {
   hour: string;
@@ -28,12 +31,14 @@ const LightControlScreen: React.FC = () => {
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [alarms, setAlarms] = useState<Alarm[]>([]);
+  const [brightness, setBrightness] = useState(0.5); // 기본값 50%
+
 
   const turnOffLED = () => {
     console.log('💡 LED OFF 명령 전송');
   };
 
-  const scheduleAlarm = () => {
+  const scheduleAlarm = async () => {
     const now = new Date();
     const alarmTime = new Date();
     const hourNum = parseInt(hour);
@@ -59,10 +64,17 @@ const LightControlScreen: React.FC = () => {
       setAlarms((prev) => prev.filter((a) => a.id !== id));
     }, timeout);
 
-    setAlarms((prev) => [...prev, { hour, minute, id }]);
-    setHour('');
-    setMinute('');
+    try {
+      await addAlarm(hourNum, minNum);
+      setAlarms((prev) => [...prev, { hour, minute, id }]);
+      setHour('');
+      setMinute('');
+    } catch (error) {
+      console.error('알람 전송 실패:', error);
+      Alert.alert('알람 전송 실패', '서버에 알람 정보를 보낼 수 없습니다.');
+    }
   };
+
 
   const cancelAlarm = (id: ReturnType<typeof setTimeout>) => {
     clearTimeout(id);
@@ -82,6 +94,8 @@ const LightControlScreen: React.FC = () => {
                 onColorChange={(newColor) => {
                   setColor(newColor);
                   setHexInput(newColor);
+                  setLEDColor(newColor).catch((err) => console.error('색상 전송 실패:', err));
+
                 }}
                 thumbSize={30}
                 sliderSize={30}
@@ -110,6 +124,28 @@ const LightControlScreen: React.FC = () => {
               />
             </View>
           </View>
+
+          <View style={styles.card}>
+            <Text style={styles.label}>💡 LED 밝기</Text>
+            <Slider
+              style={{ width: '100%', height: 40 }}
+              minimumValue={0}
+              maximumValue={1}
+              value={brightness}
+              minimumTrackTintColor="#A78BFA"
+              maximumTrackTintColor="#ccc"
+              thumbTintColor="#A78BFA"
+              onValueChange={(value) => {
+                setBrightness(value);
+                setLEDBrightness(value).catch((err) => console.error('밝기 전송 실패:', err));
+                // Raspberry Pi에 전달하려면 fetch 추가 가능
+              }}
+            />
+            <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>
+              현재 밝기: {(brightness * 100).toFixed(0)}%
+            </Text>
+          </View>
+
 
           <Text style={[styles.title, { marginTop: 20 }]}>⏰ 알람 설정</Text>
 
@@ -226,6 +262,8 @@ const styles = StyleSheet.create({
   },
   alarmText: { color: 'white', fontSize: 16 },
   cancel: { color: '#F56565', fontSize: 18, fontWeight: 'bold' },
+  
+  
 });
 
 export default LightControlScreen;
