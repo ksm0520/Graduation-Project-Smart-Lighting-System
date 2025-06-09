@@ -15,6 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/StackNavigator';
 import { Audio } from 'expo-av';
+import { toggleLED } from '../api/api';
 
 import Background from '../assets/img/Background.png';
 import BtS from '../assets/sounds/BtS.mp3';
@@ -39,12 +40,21 @@ export default function HomeScreen() {
   };
 
   // ✅ 전원 상태 전환
-  const togglePower = () => {
-    setIsOn((prev) => !prev);
+  const togglePower = async () => {
+    const nextState = !isOn;
+    setIsOn(nextState);
     playSound();
-    ToastAndroid.show(isOn ? 'Light Off' : 'Light On', ToastAndroid.SHORT);
-    // ⚠ 여기에 MQTT publish 코드 연결 예정
+    ToastAndroid.show(nextState ? 'Light On' : 'Light Off', ToastAndroid.SHORT);
+
+    try {
+      await toggleLED(nextState);
+      console.log(`✅ LED 전원 전송 성공: ${nextState}`);
+    } catch (error) {
+      console.error('❌ LED 전원 전송 실패:', error);
+      ToastAndroid.show('LED 전원 제어 실패', ToastAndroid.SHORT);
+    }
   };
+
 
   // ✅ 드롭다운 애니메이션
   useEffect(() => {
