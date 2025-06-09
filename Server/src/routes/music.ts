@@ -18,16 +18,24 @@ router.get('/', async (req, res) => {
 router.post('/play', async (req, res) => {
   const { mode } = req.body;
   try {
-    await db.query(
-      'UPDATE music SET status = $1, mode = $2 WHERE id = (SELECT id FROM music ORDER BY id DESC LIMIT 1)',
-      ['on', mode]
-    );
+    const result = await db.query('SELECT id FROM music ORDER BY id DESC LIMIT 1');
+
+    if (result.rows.length === 0) {
+      await db.query('INSERT INTO music (status, mode, volume) VALUES ($1, $2, $3)', ['on', mode, 50]);
+    } else {
+      await db.query(
+        'UPDATE music SET status = $1, mode = $2 WHERE id = $3',
+        ['on', mode, result.rows[0].id]
+      );
+    }
+
     res.status(200).json({ success: true });
   } catch (err) {
     console.error('🎵 음악 재생 실패:', err);
     res.status(500).json({ error: '음악 재생 실패' });
   }
 });
+
 
 // 🎵 음악 정지 (POST /music/stop)
 router.post('/stop', async (req, res) => {

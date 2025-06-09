@@ -33,7 +33,7 @@ const MusicScreen = () => {
       try {
         const res = await getMusicStatus();
         if (res.data?.mode) setCurrentSong(res.data.mode);
-        if (res.data?.volume !== undefined) setVolume(res.data.volume);
+        if (res.data?.volume !== undefined) setVolume(res.data.volume / 100);  // 변환
       } catch (err) {
         console.error('음악 상태 조회 실패:', err);
       }
