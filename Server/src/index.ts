@@ -29,5 +29,5 @@ app.listen(PORT, () => {
 });
 
 app.get('/', (req, res) => {
-  res.send('✅ API 서버 정상 작동 중');
+  res.send('서버');
 });
