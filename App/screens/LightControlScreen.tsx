@@ -1,6 +1,4 @@
-// 완성본 수정: ColorPicker와 HEX 입력란 겹침 해결 및 순서 조정 완료
-
-import React, { useState } from 'react';
+import React, { useState,useRef  } from 'react';
 import {
   View,
   Text,
@@ -11,13 +9,14 @@ import {
   Alert,
   ScrollView,
   KeyboardAvoidingView,
+  ToastAndroid ,
   Platform,
 } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
 import Background from '../assets/img/Background.png';
 import Slider from '@react-native-community/slider';
 import { setLEDColor, setLEDBrightness, setLEDStatus, addAlarm } from '../api/api';
-
+import debounce from 'lodash/debounce';
 
 interface Alarm {
   hour: string;
@@ -31,12 +30,35 @@ const LightControlScreen: React.FC = () => {
   const [hour, setHour] = useState('');
   const [minute, setMinute] = useState('');
   const [alarms, setAlarms] = useState<Alarm[]>([]);
-  const [brightness, setBrightness] = useState(0.5); // 기본값 50%
+  const [brightness, setBrightness] = useState(0.5); // 기본값 50%4
+
+    const debouncedSetColor = useRef(
+    debounce((newColor: string) => {
+      setLEDColor(newColor).catch((err) => console.error('색상 전송 실패:', err));
+    }, 300)
+  ).current;
 
 
   const turnOffLED = () => {
-    console.log('💡 LED OFF 명령 전송');
+    setLEDStatus('off')
+      .then(() => {
+        console.log('💡 LED 전원 꺼짐');
+        if (Platform.OS === 'android') {
+          ToastAndroid.show('LED 꺼짐', ToastAndroid.SHORT);
+        } else {
+          console.log('LED 꺼짐 (웹)');
+        }
+      })
+      .catch((error) => {
+        console.error('❌ LED 전원 끄기 실패:', error);
+        if (Platform.OS === 'android') {
+          ToastAndroid.show('LED 끄기 실패', ToastAndroid.SHORT);
+        } else {
+          console.error('LED 끄기 실패 (웹)');
+        }
+      });
   };
+  
 
   const scheduleAlarm = async () => {
     const now = new Date();
@@ -60,7 +82,7 @@ const LightControlScreen: React.FC = () => {
     const timeout = alarmTime.getTime() - now.getTime();
     const id = setTimeout(() => {
       Alert.alert('⏰ 알람', `${hourNum}시 ${minNum}분입니다!`);
-      turnOffLED();
+      turnOffLED(); // 여기!
       setAlarms((prev) => prev.filter((a) => a.id !== id));
     }, timeout);
 
@@ -94,8 +116,7 @@ const LightControlScreen: React.FC = () => {
                 onColorChange={(newColor) => {
                   setColor(newColor);
                   setHexInput(newColor);
-                  setLEDColor(newColor).catch((err) => console.error('색상 전송 실패:', err));
-
+                  debouncedSetColor(newColor); 
                 }}
                 thumbSize={30}
                 sliderSize={30}
@@ -137,8 +158,10 @@ const LightControlScreen: React.FC = () => {
               thumbTintColor="#A78BFA"
               onValueChange={(value) => {
                 setBrightness(value);
-                setLEDBrightness(value).catch((err) => console.error('밝기 전송 실패:', err));
-                // Raspberry Pi에 전달하려면 fetch 추가 가능
+                const brightnessInt = Math.round(value * 100); // 0.23 → 23
+                setLEDBrightness(brightnessInt).catch((err) =>
+                  console.error('밝기 전송 실패:', err)
+                );
               }}
             />
             <Text style={{ color: 'white', textAlign: 'center', marginTop: 8 }}>
