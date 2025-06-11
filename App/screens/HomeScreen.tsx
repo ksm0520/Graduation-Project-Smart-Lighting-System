@@ -15,7 +15,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/StackNavigator';
 import { Audio } from 'expo-av';
-import { toggleLED } from '../api/api';
+import { setLEDStatus } from '../api/api';
 
 import Background from '../assets/img/Background.png';
 import BtS from '../assets/sounds/BtS.mp3';
@@ -44,14 +44,25 @@ export default function HomeScreen() {
     const nextState = !isOn;
     setIsOn(nextState);
     playSound();
-    ToastAndroid.show(nextState ? 'Light On' : 'Light Off', ToastAndroid.SHORT);
+
+    // ✅ 토스트 분기 처리
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(nextState ? 'Light On' : 'Light Off', ToastAndroid.SHORT);
+    } else {
+      console.log(nextState ? 'Light On' : 'Light Off');
+    }
 
     try {
-      await toggleLED(nextState);
+      await setLEDStatus(nextState ? 'on' : 'off');
       console.log(`✅ LED 전원 전송 성공: ${nextState}`);
     } catch (error) {
       console.error('❌ LED 전원 전송 실패:', error);
-      ToastAndroid.show('LED 전원 제어 실패', ToastAndroid.SHORT);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('LED 전원 제어 실패', ToastAndroid.SHORT);
+      } else {
+        console.error('LED 전원 제어 실패 (웹)');
+      }
     }
   };
 

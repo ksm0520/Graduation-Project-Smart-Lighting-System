@@ -27,7 +27,7 @@ export const stopMusic = () => axios.post(`${BASE_URL}/music/stop`);
 
 // 음악 볼륨 조절 (0~100)
 export const setMusicVolume = (volume: number) =>
-  axios.post(`${BASE_URL}/music/volume`, { volume: volume * 100 });
+  axios.post(`${BASE_URL}/music/volume`, { volume: Math.round(volume * 100) }); // 🔥 수정
 
 //
 // ✅ Alarm 관련

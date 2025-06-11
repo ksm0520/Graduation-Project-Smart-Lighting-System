@@ -5,6 +5,8 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Platform,
+  ToastAndroid ,
 } from 'react-native';
 import Background from '../assets/img/Background.png';
 import Slider from '@react-native-community/slider';
@@ -46,28 +48,64 @@ const MusicScreen = () => {
     try {
       await playMusic(mode);
       setCurrentSong(mode);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(`🎶 ${mode} 재생됨`, ToastAndroid.SHORT);
+      } else {
+        console.log(`🎶 ${mode} 재생됨`);
+      }
     } catch (error) {
       console.error('음악 재생 실패:', error);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('음악 재생 실패', ToastAndroid.SHORT);
+      } else {
+        console.log('음악 재생 실패');
+      }
     }
   };
+
 
   const stopMusicHandler = async () => {
     try {
       await stopMusic();
       setCurrentSong(null);
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('⏹ 음악 정지됨', ToastAndroid.SHORT);
+      } else {
+        console.log('⏹ 음악 정지됨');
+      }
     } catch (error) {
       console.error('음악 정지 실패:', error);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('음악 정지 실패', ToastAndroid.SHORT);
+      } else {
+        console.log('음악 정지 실패');
+      }
     }
   };
 
   const handleVolumeChange = async (value: number) => {
     setVolume(value);
+
     try {
-      await setMusicVolume(value);
+      await setMusicVolume(value); // 🔥 여기서 value 그대로 전달
+
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(`볼륨: ${(value * 100).toFixed(0)}%`, ToastAndroid.SHORT);
+      } else {
+        console.log(`볼륨: ${(value * 100).toFixed(0)}%`);
+      }
     } catch (err) {
       console.error('볼륨 조절 실패:', err);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('볼륨 조절 실패', ToastAndroid.SHORT);
+      } else {
+        console.log('볼륨 조절 실패');
+      }
     }
   };
+
 
   return (
     <ImageBackground source={Background} resizeMode="cover" style={styles.background}>
