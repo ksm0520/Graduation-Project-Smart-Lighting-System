@@ -22,6 +22,7 @@
     "expo-av": "~15.0.2",
     "expo-barcode-scanner": "^13.0.1",
     "expo-camera": "~16.0.18",
+    "expo-dev-client": "~5.0.20",
     "expo-media-library": "~17.0.6",
     "expo-status-bar": "~2.0.1",
     "lodash": "^4.17.21",
@@ -37,7 +38,7 @@
     "react-native-web": "~0.19.13",
     "react-native-wheel-color-picker": "^1.3.1",
     "tailwind-rn": "^4.2.0",
-    "expo-dev-client": "~5.0.20"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -46,6 +47,7 @@
     "@types/lodash": "^4.17.17",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.72.8",
+    "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
