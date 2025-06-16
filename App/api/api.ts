@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://graduation-project-smart-lighting-system-production.up.railway.app';
+export const BASE_URL = 'https://graduation-project-smart-lighting-system-production.up.railway.app';
 
 //
 // ✅ LED 관련
@@ -33,22 +33,42 @@ export const setMusicVolume = (volume: number) =>
 // ✅ Alarm 관련
 //
 export const getAlarms = () => axios.get(`${BASE_URL}/alarm`);
-export const addAlarm = (data: { hour: number; minute: number }) => {
-  return axios.post(`${BASE_URL}/alarm`, data);
-};
+export const addAlarm = (data: { status: string; time: string }) =>
+  axios.post(`${BASE_URL}/alarm`, data);
 export const deleteAlarm = (id: number) => axios.delete(`${BASE_URL}/alarm/${id}`);
 
 //
 // ✅ Routine 관련
 //
-export const getRoutines = () => axios.get(`${BASE_URL}/routine`);
-export const addRoutine = (data: { title: string; time: string }) =>
-  axios.post(`${BASE_URL}/routine`, data);
-export const deleteRoutine = (id: number) => axios.delete(`${BASE_URL}/routine/${id}`);
+interface Routine {
+  id: number;
+  name: string;
+  time: string;
+  enabled: boolean;
+  actions: any; // 서버에서 JSON으로 받는 구조
+}
 
+
+export const getRoutines = () => axios.get(`${BASE_URL}/routine`);
+
+export const addRoutine = (data: {
+  name: string;
+  time: string;
+  enabled: boolean;
+  actions: any;
+}) => axios.post(`${BASE_URL}/routine`, data);
+
+
+
+export const deleteRoutine = (id: number) =>
+  axios.delete(`${BASE_URL}/routine/${id}`);
 //
 // ✅ QR 공유 관련
 //
-export const exportQR = () => axios.get(`${BASE_URL}/qr/export`);
-export const importQR = (data: { routines: { title: string; time: string }[] }) =>
+// QR 등록 및 공유 
+export const exportQR = (routineId: string) =>
+  axios.post(`${BASE_URL}/qr`, { routine_id: routineId });
+
+// QR을 통해 루틴 가져오기
+export const importQR = (data: { qr_code: string }) =>
   axios.post(`${BASE_URL}/qr/import`, data);

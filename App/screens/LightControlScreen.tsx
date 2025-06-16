@@ -87,10 +87,11 @@ const LightControlScreen: React.FC = () => {
     }, timeout);
 
     try {
-      await addAlarm({ hour: hourNum, minute: minNum });
-      setAlarms((prev) => [...prev, { hour, minute, id }]);
-      setHour('');
-      setMinute('');
+       const time = `${String(hourNum).padStart(2, '0')}:${String(minNum).padStart(2, '0')}`;
+        await addAlarm({ status: 'on', time }); // ✅ 명세서에 맞는 구조로 수정
+        setAlarms((prev) => [...prev, { hour, minute, id }]);
+        setHour('');
+        setMinute('');
     } catch (error) {
       console.error('알람 전송 실패:', error);
       Alert.alert('알람 전송 실패', '서버에 알람 정보를 보낼 수 없습니다.');

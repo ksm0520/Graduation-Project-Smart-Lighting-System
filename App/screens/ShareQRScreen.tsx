@@ -1,88 +1,156 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Share } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Share,
+  ImageBackground,
+  RefreshControl,
+  ScrollView,
+  ToastAndroid,
+  Modal,
+} from "react-native";
 import QRCode from "react-native-qrcode-svg";
-import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
-import ViewShot, { captureRef } from 'react-native-view-shot';
-import { useNavigation } from "@react-navigation/native";
-  
+import { captureRef } from "react-native-view-shot";
+import { BarCodeScanner } from "expo-barcode-scanner";
+import Background from "../assets/img/Background.png";
+import { getRoutines, exportQR, importQR } from "../api/api";
 
 const ShareQRScreen = () => {
-  const qrRef = React.useRef(null);
-  const navigation = useNavigation();
+  const qrRef = useRef(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [routineData, setRoutineData] = useState<any>(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [scanning, setScanning] = useState(false);
 
- 
-  const routineData = {
-    name: "Night",  
-    color: "#3D348B",
-    brightness: 70,
-    routineId: "night001",
+  const fetchRoutine = async () => {
+    try {
+      const response = await getRoutines();
+      if (Array.isArray(response?.data) && response.data.length > 0) {
+        setRoutineData(response.data[response.data.length - 1]); //가장 최근 루틴 가져오기 
+      }
+    } catch (err) {
+      console.error("루틴 불러오기 실패:", err);
+    }
   };
 
-  const jsonData = JSON.stringify(routineData);
-
   const saveQRCode = async () => {
+    const permission = await MediaLibrary.requestPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert("권한 필요", "갤러리 저장 권한이 필요합니다.");
+      return;
+    }
+
     try {
-      const permission = await MediaLibrary.requestPermissionsAsync();
-      if (!permission.granted) {
-        Alert.alert("??? ?????", "??? ?? ??? ?? ??? ?????.");
-        return;
-      }
-
-      const uri = await captureRef(qrRef, {
-        format: "png",
-        quality: 1,
-      });
-
+      const uri = await captureRef(qrRef, { format: "png", quality: 1 });
       const asset = await MediaLibrary.createAssetAsync(uri);
       await MediaLibrary.createAlbumAsync("QR Codes", asset, false);
-
-      Alert.alert("?? ??", "QR ??? ???? ???????.");
-    } catch (error) {
-      Alert.alert("??", "QR ?? ?? ? ??? ??????.");
-      console.error(error);
+      Alert.alert("저장 완료", "QR 코드가 갤러리에 저장되었습니다.");
+    } catch (err) {
+      console.error("QR 저장 실패:", err);
+      Alert.alert("에러", "QR 코드 저장에 실패했습니다.");
     }
   };
 
   const shareQRCode = async () => {
     try {
-      const uri = await captureRef(qrRef, {
-        format: "png",
-        quality: 1,
-      });
-
+      const res = await exportQR(routineData.id);
+      const qrCode = res.data.qr_code;
       await Share.share({
-        url: uri,
-        message: "? QR ??? ?? ?? ??? ??? ??????!",
+        message: `공유할 QR 코드: ${qrCode}`,
       });
-    } catch (error) {
-      Alert.alert("??", "QR ?? ?? ? ??? ??????.");
-      console.error(error);
+    } catch (err) {
+      console.error("QR 공유 실패:", err);
+      Alert.alert("공유 실패", "QR 코드 생성에 실패했습니다.");
     }
   };
 
+  const handleQRImport = async (qrData: string) => {
+    try {
+      const res = await importQR({ qr_code: qrData });
+      if (res.data?.name) {
+        Alert.alert("불러오기 완료", `루틴: ${res.data.name}이 등록되었습니다.`);
+        fetchRoutine();
+      } else {
+        Alert.alert("불러오기 실패", "해당 QR의 루틴이 없습니다.");
+      }
+    } catch (err) {
+      console.error("QR 불러오기 실패:", err);
+      Alert.alert("에러", "QR 루틴 불러오기 중 에러 발생");
+    }
+  };
+
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
+    setScanning(false);
+    handleQRImport(data);
+  };
+
+  useEffect(() => {
+    fetchRoutine();
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) return <Text>카메라 권한 요청 중...</Text>;
+  if (hasPermission === false) return <Text>카메라 접근이 불가능합니다.</Text>;
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>QR Code</Text>
+    <ImageBackground source={Background} style={styles.container} resizeMode="cover">
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchRoutine} />}
+      >
+        {routineData && (
+          <>
+            <View style={styles.qrBox} ref={qrRef}>
+              <QRCode
+                value={routineData.id.toString()}
+                size={200}
+                color="#FFF"
+                backgroundColor="transparent"
+              />
+            </View>
+            <Text style={styles.routineText}>🧠 루틴: {routineData.name}</Text>
+            <Text style={styles.routineText}>⏰ 시간: {routineData.time}</Text>
+          </>
+        )}
 
-      <ViewShot ref={qrRef} options={{ format: 'png', quality: 1 }} style={styles.qrContainer}>
-        <QRCode value={jsonData} size={220} />
-      </ViewShot>
+        <View style={styles.buttons}>
+          <TouchableOpacity style={styles.btn} onPress={saveQRCode}>
+            <Text style={styles.btnText}>저장</Text>
+          </TouchableOpacity>
 
+          <TouchableOpacity style={styles.btn} onPress={shareQRCode}>
+            <Text style={styles.btnText}>공유</Text>
+          </TouchableOpacity>
 
-      <Text style={styles.routineText}>Name: {routineData.name}</Text>
-      <Text style={styles.routineText}>Color: {routineData.color}</Text>
-      <Text style={styles.routineText}>Brightness: {routineData.brightness}%</Text>
+          <TouchableOpacity
+            style={[styles.btn, { backgroundColor: "#4CAF50" }]}
+            onPress={() => setScanning(true)}
+          >
+            <Text style={styles.btnText}>불러오기</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={saveQRCode}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={shareQRCode}>
-          <Text style={styles.buttonText}>Share</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <Modal visible={scanning} animationType="slide">
+          <BarCodeScanner
+            onBarCodeScanned={handleBarCodeScanned}
+            style={{ flex: 1 }}
+          />
+          <TouchableOpacity
+            style={{ padding: 20, backgroundColor: "#222" }}
+            onPress={() => setScanning(false)}
+          >
+            <Text style={{ color: "#FFF", textAlign: "center" }}>닫기</Text>
+          </TouchableOpacity>
+        </Modal>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -91,41 +159,40 @@ export default ShareQRScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0F0F0F",
+    backgroundColor: "#000",
+  },
+  scrollContent: {
+    flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: 20,
+    padding: 20,
   },
-  title: {
-    fontSize: 22,
-    color: "#FFF",
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  qrContainer: {
-    backgroundColor: "#FFF",
-    padding: 10,
-    borderRadius: 12,
+  qrBox: {
+    backgroundColor: "rgba(255,255,255,0.1)",
+    padding: 20,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#9C7FFF",
     marginBottom: 20,
   },
   routineText: {
-    color: "#CCC",
+    color: "#E0DBFF",
     fontSize: 16,
-    marginVertical: 2,
+    marginVertical: 4,
   },
-  buttonContainer: {
+  buttons: {
     flexDirection: "row",
-    gap: 10,
-    marginTop: 30,
+    marginTop: 20,
+    gap: 12,
   },
-  button: {
-    backgroundColor: "#3D348B",
-    paddingVertical: 10,
+  btn: {
+    backgroundColor: "#6E67CE",
+    paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 12,
+    borderRadius: 14,
   },
-  buttonText: {
+  btnText: {
     color: "#FFF",
-    fontSize: 16,
+    fontWeight: "bold",
   },
 });
