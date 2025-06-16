@@ -1,45 +1,67 @@
-// src/routes/qr.ts
-
-import express, { Request, Response } from 'express';
-import pool from '../db';
+import express, { Request, Response } from "express";
+import pool from "../db"; // default export 기준
 
 const router = express.Router();
 
-// ✅ QR 코드 가져오기 (Export)
-router.get('/export', async (req: Request, res: Response) => {
-  try {
-    const result = await pool.query('SELECT * FROM routines');
-    res.status(200).json(result.rows);
-  } catch (err) {
-    console.error('❌ QR export 실패:', err);
-    res.status(500).json({ error: '루틴을 가져오는 데 실패했습니다.' });
-  }
-});
+/**
+ * QR 코드 생성 - POST /qr/export
+ * qr_code = "routine_{routine_id}" 형태로 저장
+ */
+  router.post("/export", async (req: Request, res: Response): Promise<void> => {
+    const { routine_id } = req.body;
 
-// ✅ QR 코드로 루틴 등록 (Import)
-router.post('/import', async (req: Request, res: Response) => {
-
-  const routines = Array.isArray(req.body.routines)
-    ? req.body.routines
-    : [req.body];
-
-  try {
-    for (const routine of routines) {
-      const { name, time, enabled = true, actions } = routine;
-
-      await pool.query(
-        `INSERT INTO routines (name, time, enabled, actions)
-         VALUES ($1, $2, $3, $4)`,
-        [name, time, enabled, actions]
-      );
+    if (!routine_id) {
+      res.status(400).json({ error: "routine_id is required" });
+      return;
     }
 
-    res.status(201).json({ message: 'QR 루틴 가져오기 완료' });
+    const qrCode = `routine_${routine_id}`;
+
+    try {
+      await pool.query(
+        "INSERT INTO routine_qr (routine_id, qr_code) VALUES ($1, $2)",
+        [routine_id, qrCode]
+      );
+
+      res.status(201).json({ qr_code: qrCode });
+    } catch (err) {
+      console.error("QR 생성 실패:", err);
+      res.status(500).json({ error: "QR 생성 실패" });
+    }
+  });
+
+
+router.post("/import", async (req: Request, res: Response): Promise<void> => {
+  const { qr_code } = req.body;
+
+  if (!qr_code || !qr_code.startsWith("routine_")) {
+    res.status(400).json({ error: "잘못된 qr_code 형식입니다." });
+    return;
+  }
+
+  const routine_id = parseInt(qr_code.replace("routine_", ""), 10);
+
+  if (isNaN(routine_id)) {
+    res.status(400).json({ error: "루틴 ID 파싱 실패" });
+    return;
+  }
+
+  try {
+    const result = await pool.query(
+      "SELECT * FROM routines WHERE id = $1",
+      [routine_id]
+    );
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: "루틴이 존재하지 않습니다." });
+      return;
+    }
+
+    res.json(result.rows[0]);
   } catch (err) {
-    console.error('❌ QR import 실패:', err);
-    res.status(500).json({ error: 'QR 루틴 등록 중 오류 발생' });
+    console.error("QR 루틴 불러오기 실패:", err);
+    res.status(500).json({ error: "루틴 불러오기 중 에러 발생" });
   }
 });
-
 
 export default router;
