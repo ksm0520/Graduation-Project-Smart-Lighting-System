@@ -66,9 +66,10 @@ export const deleteRoutine = (id: number) =>
 // ✅ QR 공유 관련
 //
 // QR 생성
-export const exportQR = (routineId: string) =>
-  axios.post(`${BASE_URL}/qr`, { routine_id: routineId });
+export const exportQR = (routineId: number) =>
+  axios.post(`${BASE_URL}/qr/export`, { routine_id: routineId });
 
-// QR 불러오기
-export const importQR = (data: { qr_code: string }) =>
-  axios.post(`${BASE_URL}/qr/import`, data);
+// QR 불러오기  
+export const importQR = (body: { qr_code: string }) =>
+  axios.post(`${BASE_URL}/qr/import`, body);
+

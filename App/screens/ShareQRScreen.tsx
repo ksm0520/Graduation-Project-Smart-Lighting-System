@@ -1,3 +1,4 @@
+// ShareQRScreen.tsx (expo-go 호환, BarCodeScanner 제거 버전)
 import React, { useEffect, useRef, useState } from "react";
 import {
   View,
@@ -10,12 +11,13 @@ import {
   RefreshControl,
   ScrollView,
   ToastAndroid,
-  Modal,
+  TextInput,
+  Platform,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
 import * as MediaLibrary from "expo-media-library";
 import { captureRef } from "react-native-view-shot";
-import { BarCodeScanner } from "expo-barcode-scanner";
+// import { BarCodeScanner } from "expo-barcode-scanner"; // Expo Go 미지원이라 제거
 import Background from "../assets/img/Background.png";
 import { getRoutines, exportQR, importQR } from "../api/api";
 
@@ -23,14 +25,13 @@ const ShareQRScreen = () => {
   const qrRef = useRef(null);
   const [refreshing, setRefreshing] = useState(false);
   const [routineData, setRoutineData] = useState<any>(null);
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [scanning, setScanning] = useState(false);
+  const [manualQR, setManualQR] = useState("");
 
   const fetchRoutine = async () => {
     try {
       const response = await getRoutines();
       if (Array.isArray(response?.data) && response.data.length > 0) {
-        setRoutineData(response.data[response.data.length - 1]); //가장 최근 루틴 가져오기 
+        setRoutineData(response.data[response.data.length - 1]);
       }
     } catch (err) {
       console.error("루틴 불러오기 실패:", err);
@@ -43,7 +44,6 @@ const ShareQRScreen = () => {
       Alert.alert("권한 필요", "갤러리 저장 권한이 필요합니다.");
       return;
     }
-
     try {
       const uri = await captureRef(qrRef, { format: "png", quality: 1 });
       const asset = await MediaLibrary.createAssetAsync(uri);
@@ -83,21 +83,9 @@ const ShareQRScreen = () => {
     }
   };
 
-  const handleBarCodeScanned = ({ data }: { data: string }) => {
-    setScanning(false);
-    handleQRImport(data);
-  };
-
   useEffect(() => {
     fetchRoutine();
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
   }, []);
-
-  if (hasPermission === null) return <Text>카메라 권한 요청 중...</Text>;
-  if (hasPermission === false) return <Text>카메라 접근이 불가능합니다.</Text>;
 
   return (
     <ImageBackground source={Background} style={styles.container} resizeMode="cover">
@@ -124,31 +112,22 @@ const ShareQRScreen = () => {
           <TouchableOpacity style={styles.btn} onPress={saveQRCode}>
             <Text style={styles.btnText}>저장</Text>
           </TouchableOpacity>
-
           <TouchableOpacity style={styles.btn} onPress={shareQRCode}>
             <Text style={styles.btnText}>공유</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.btn, { backgroundColor: "#4CAF50" }]}
-            onPress={() => setScanning(true)}
-          >
-            <Text style={styles.btnText}>불러오기</Text>
-          </TouchableOpacity>
         </View>
 
-        <Modal visible={scanning} animationType="slide">
-          <BarCodeScanner
-            onBarCodeScanned={handleBarCodeScanned}
-            style={{ flex: 1 }}
+        <View style={{ marginTop: 20, width: "100%" }}>
+          <Text style={{ color: "#FFF", marginBottom: 6 }}>🔤 QR 코드 수동 입력:</Text>
+          <TextInput
+            placeholder="routine_3"
+            placeholderTextColor="#ccc"
+            style={{ borderWidth: 1, borderColor: "#888", padding: 10, borderRadius: 10, color: "#fff" }}
+            value={manualQR}
+            onChangeText={setManualQR}
+            onSubmitEditing={() => handleQRImport(manualQR)}
           />
-          <TouchableOpacity
-            style={{ padding: 20, backgroundColor: "#222" }}
-            onPress={() => setScanning(false)}
-          >
-            <Text style={{ color: "#FFF", textAlign: "center" }}>닫기</Text>
-          </TouchableOpacity>
-        </Modal>
+        </View>
       </ScrollView>
     </ImageBackground>
   );
