@@ -1,0 +1,11 @@
+my_smart_home/
+├── main.py
+├── api_client.py
+├── music_control.py
+├── led_control.py
+├── alarm_control.py
+├── routine_control.py
+├── mic_control.py
+├── user_settings.py
+├── utils.py
+└── requirements.txt

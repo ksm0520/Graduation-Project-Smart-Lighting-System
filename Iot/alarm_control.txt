@@ -1,0 +1,52 @@
+import requests
+
+API_BASE = "https://graduation-project-smart-lighting-system-production.up.rail>
+
+def check_and_ring_alarms(alarms):
+    """
+    알람 리스트 받아서, 현재 시간에 맞는 알람이 있으면 실제로 알람음/동작 실행.
+    alarms: get_alarm() 결과(리스트)
+    """
+    from datetime import datetime
+    now = datetime.now().strftime("%H:%M")
+    for alarm in alarms:
+        if alarm.get("status") == "on" and alarm.get("time") == now:
+            print(f"[ALARM] 울림! {now}")
+            # 실제 알람음/하드웨어 동작 예시 (os.system 등)
+            # os.system("aplay /home/pi/alarm.wav")
+
+
+def get_alarm(alarm_id=None, status=None, time=None):
+    """
+    알람 조회 (쿼리파라미터 id, status, time)
+    예: get_alarm(alarm_id=1), get_alarm(status="on", time="07:30")
+    """
+    params = {}
+    if alarm_id is not None:
+        params["id"] = alarm_id
+    if status is not None:
+        params["status"] = status
+    if time is not None:
+        params["time"] = time
+    resp = requests.get(f"{API_BASE}/alarm", params=params, timeout=5)
+    return resp.json()
+
+def post_alarm(status="on", time="07:30"):
+    """
+    알람 추가 (POST)
+    status: "on" or "off"
+    time: "HH:MM"
+    """
+    payload = {
+        "status": status,
+        "time": time
+    }
+    resp = requests.post(f"{API_BASE}/alarm", json=payload, timeout=5)
+    return resp.json()
+
+def delete_alarm(alarm_id):
+    """알람 삭제 (DELETE)"""
+    resp = requests.delete(f"{API_BASE}/alarm/{alarm_id}", timeout=5)
+    return resp.status_code
+
+ 

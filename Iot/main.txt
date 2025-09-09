@@ -1,0 +1,73 @@
+import asyncio
+from api_client import (
+    get_music_status, get_led_status, get_alarm, get_routines
+)
+from music_control import apply_music_status, is_routine_priority_active as music_priority
+from led_control import apply_led_status, is_routine_priority_active as led_priority
+from alarm_control import check_and_ring_alarms
+from routine_control import check_and_run_routines
+from utils import now_str
+from mic_control import mic_event_loop   
+
+ASYNC_INTERVAL = 5   
+
+async def sync_music():
+    try:
+        if music_priority():
+            print("[MUSIC] 루틴 우선권, 서버 음악 갱신 스킵")
+            return
+        music = get_music_status()
+        print(f"[MAIN] 음악 상태: {music}")
+        apply_music_status(music)
+    except Exception as e:
+        print("[MAIN][MUSIC][ERROR]", e)
+
+async def sync_led():
+    try:
+        if led_priority():
+            print("[LED] 루틴 우선권, 서버 LED 갱신 스킵")
+            return
+        led = get_led_status()
+        print(f"[MAIN] LED 상태: {led}")
+        apply_led_status(led)
+    except Exception as e:
+        print("[MAIN][LED][ERROR]", e)
+
+async def sync_alarms():
+    try:
+        alarms = get_alarm()
+        print(f"[MAIN] 알람 상태: {alarms}")
+        check_and_ring_alarms(alarms)
+    except Exception as e:
+        print("[MAIN][ALARM][ERROR]", e)
+
+async def sync_routines():
+    try:
+        routines = get_routines()
+        print(f"[MAIN] 루틴 상태: {routines}")
+        check_and_run_routines(routines)
+    except Exception as e:
+        print("[MAIN][ROUTINE][ERROR]", e)
+
+async def periodic_sync():
+    while True:
+        await asyncio.gather(
+            sync_music(),
+            sync_led(),
+            sync_alarms(),
+            sync_routines()
+        )
+        await asyncio.sleep(ASYNC_INTERVAL)
+
+async def main():
+    print("[MAIN] 스마트홈 서비스 시작!", now_str())
+    await asyncio.gather(
+        periodic_sync(),
+        mic_event_loop()
+    )
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\n[MAIN] 프로그램 종료")

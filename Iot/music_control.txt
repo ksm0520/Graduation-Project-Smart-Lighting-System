@@ -1,0 +1,90 @@
+import os
+import random
+import time
+
+import vlc
+
+ 
+MODE_TO_MUSIC = {
+    "classic":   "/home/hang/local_music/The Temple Of The King_Rainbow.mp3",
+    "studying":  "/home/hang/local_music/Creedence Clearwater Revival Who'll Stop The Rain.mp3",
+    "rain":      "/home/hang/local_music/ALWAYS SOMEWHERE_SCORPIONS.mp3",
+    "sleeping":  "/home/hang/local_music/Don't Play That Song_Ben E. King.mp3",
+}
+
+ 
+_current_mode = None
+_current_player = None
+_current_volume = 80
+_routine_priority_until = 0  # (epoch sec) 0이면 우선권 없음
+
+def is_routine_priority_active():
+    """루틴 우선권이 아직 유효한지(3분간)"""
+    return time.time() < _routine_priority_until
+
+def set_routine_priority(mins=3):
+    """루틴 실행 시 우선권 3분 부여(그동안 서버 갱신 무시)"""
+    global _routine_priority_until
+    _routine_priority_until = time.time() + mins * 60
+    print(f"[MUSIC] 루틴 우선권 {mins}분 활성화")
+
+def apply_music_status(music):
+    """서버로부터 음악 상태를 받아 실제로 반영"""
+    if is_routine_priority_active():
+        print("[MUSIC] 루틴 우선권: 서버 갱신 무시")
+        return
+
+     
+    mode = music.get("mode", "classic")
+    volume = music.get("volume", 80)
+    status = music.get("status", "off")
+
+    if status == "on":
+        play_music(mode, volume)
+    else:
+        stop_music()
+
+def play_music(mode="classic", volume=80):
+    global _current_mode, _current_player, _current_volume
+
+    music_file = MODE_TO_MUSIC.get(mode)
+    if not music_file or not os.path.exists(music_file):
+        print(f"[MUSIC] 모드 {mode}에 맞는 파일이 없습니다!")
+        return
+
+     
+    if _current_mode == mode and _current_player is not None:
+        print(f"[MUSIC] 이미 {mode} 모드 음악이 재생 중!")
+        _current_player.audio_set_volume(volume)
+        _current_volume = volume
+        return
+
+    
+    if _current_player is not None:
+        _current_player.stop()
+
+    print(f"[MUSIC] {mode} 모드로 음악 재생: {music_file}, 볼륨 {volume}")
+    player = vlc.MediaPlayer(music_file)
+    player.audio_set_volume(volume)
+    player.play()
+
+    _current_mode = mode
+    _current_player = player
+    _current_volume = volume
+
+def stop_music():
+    global _current_player, _current_mode
+    if _current_player is not None:
+        print("[MUSIC] 음악 정지")
+        _current_player.stop()
+    _current_mode = None
+
+def set_music_volume(volume=80):
+    global _current_player, _current_volume
+    if _current_player is not None:
+        _current_player.audio_set_volume(volume)
+        print(f"[MUSIC] 볼륨 {volume}으로 변경")
+        _current_volume = volume
+
+ 
+ 
