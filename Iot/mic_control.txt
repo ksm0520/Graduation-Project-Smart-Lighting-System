@@ -1,0 +1,111 @@
+import asyncio
+import queue
+import threading
+import json
+import os
+import pyaudio
+from vosk import Model, KaldiRecognizer
+
+from music_control import set_music_volume, _current_volume
+from led_control import set_led
+
+# ~5,21 Vosk 모델 경로 환경 맞게 수정
+MODEL_PATH = "/home/hang/smart_moodlamp/models/vosk-model-small-ko-0.22"
+RATE = 48000
+CHANNELS = 2
+DEVICE_IDX = 1  # 마이크 입력 디바이스 번호 (arecord -l 등으로 확인)
+
+
+COMMANDS = {
+    "켜줘": "restore",
+    "꺼줘": "mute",
+    "빨간색": "red",
+    "초록색": "green",
+    "파란색": "blue",
+    "노란색": "yellow",
+    "하얀색": "white",
+    "불켜": "restore",
+    "불꺼": "mute",
+    "음악켜": "music_on",
+    "음악꺼": "music_off",
+}
+
+
+_last_led = {"color": "#FFFFFF", "brightness": 100, "status": "on"}
+_last_music_volume = None
+
+def parse_command(text):
+    # 명령어 후보 중 가장 유사한 것을 고름(여기선 단순히 exact match)
+    return COMMANDS.get(text.strip(), None)
+
+class SpeechRecognizer:
+    def __init__(self):
+        self.model = Model(MODEL_PATH)
+        self.rec = KaldiRecognizer(self.model, RATE)
+        self.audio = pyaudio.PyAudio()
+        self.q = queue.Queue()
+
+    def _worker(self):
+        stream = self.audio.open(format=pyaudio.paInt16,
+                                 channels=CHANNELS,
+                                 rate=RATE,
+                                 input=True,
+                                 input_device_index=DEVICE_IDX,
+                                 frames_per_buffer=4096)
+        while True:
+            self.q.put(stream.read(4096, exception_on_overflow=False))
+
+    async def listen(self):
+        threading.Thread(target=self._worker, daemon=True).start()
+        while True:
+            data = self.q.get()
+            if self.rec.AcceptWaveform(data):
+                result = json.loads(self.rec.Result())["text"].strip()
+                if result:
+                    yield result
+            await asyncio.sleep(0)
+
+async def mic_event_loop():
+    rec = SpeechRecognizer()
+    print(">> (mic_control) 음성 인식 시작, 명령을 말하세요…")
+    global _last_led, _last_music_volume
+    muted = False
+
+    async for text in rec.listen():
+        print("▶", text)
+        cmd = parse_command(text)
+        if cmd == "mute" and not muted:
+            print("[MIC] 전체 음소거/LED 끄기")
+            _last_music_volume = _current_volume
+            set_music_volume(0)
+            _last_led = {"color": "#FFFFFF", "brightness": 100, "status": "on"}  # 복구용, 실제값 저장 필요
+            set_led(color="#000000", brightness=0, status="off")
+            muted = True
+
+        elif cmd == "restore" and muted:
+            print("[MIC] 소리/LED 복구")
+            if _last_music_volume is not None:
+                set_music_volume(_last_music_volume)
+            set_led(**_last_led)
+            muted = False
+
+        elif cmd in ("red", "green", "blue", "yellow", "white"):
+            colors = {
+                "red": "#FF0000", "green": "#00FF00", "blue": "#0000FF",
+                "yellow": "#FFFF00", "white": "#FFFFFF"
+            }
+            set_led(color=colors[cmd], brightness=100, status="on")
+            print(f"[MIC] 색상 변경: {cmd}")
+
+        elif cmd == "music_on":
+            print("[MIC] 음악 볼륨 복구")
+            if _last_music_volume is not None:
+                set_music_volume(_last_music_volume)
+        elif cmd == "music_off":
+            print("[MIC] 음악 볼륨 0(음소거)")
+            _last_music_volume = _current_volume
+            set_music_volume(0)
+
+        else:
+            print("[MIC] 알 수 없는 명령/무시")
+

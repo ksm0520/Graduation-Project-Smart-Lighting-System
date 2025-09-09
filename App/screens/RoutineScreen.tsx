@@ -94,16 +94,16 @@ const RoutineScreen = () => {
           <Ionicons name="checkmark-circle" size={14} color="#6EF28D" />{" "}
           {item.enabled ? "활성화됨" : "비활성화"}
         </Text>
-        <Text style={styles.routineInfo}>
-          <Ionicons name="musical-notes" size={14} /> 음악:{" "}
-          {item.actions?.music || "없음"}
-        </Text>
-        <Text style={styles.routineInfo}>
-          🎨 색상:{" "}
-          <Text style={{ color: item.actions?.color || "#fff" }}>
-            {item.actions?.color || "없음"}
+          <Text style={styles.routineInfo}>
+            <Ionicons name="musical-notes" size={14} /> 음악:{" "}
+            {typeof item.actions?.music === "string" ? item.actions.music : "없음"}
           </Text>
-        </Text>
+          <Text style={styles.routineInfo}>
+            🎨 색상:{" "}
+            <Text style={{ color: typeof item.actions?.color === "string" ? item.actions.color : "#fff" }}>
+              {typeof item.actions?.color === "string" ? item.actions.color : "없음"}
+            </Text>
+          </Text>
       </View>
       <TouchableOpacity onPress={() => handleDelete(item.id)}>
         <Text style={styles.deleteBtn}>삭제</Text>

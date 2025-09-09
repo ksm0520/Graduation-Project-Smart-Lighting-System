@@ -1,0 +1,85 @@
+import RPi.GPIO as GPIO
+import time
+
+ 
+LED_R_PIN = 13
+LED_G_PIN = 12
+LED_B_PIN = 18
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup([LED_R_PIN, LED_G_PIN, LED_B_PIN], GPIO.OUT)
+
+RED = GPIO.PWM(LED_R_PIN, 1000)
+GREEN = GPIO.PWM(LED_G_PIN, 1000)
+BLUE = GPIO.PWM(LED_B_PIN, 1000)
+
+RED.start(0)
+GREEN.start(0)
+BLUE.start(0)
+
+ 
+_routine_priority_until = 0
+
+def is_routine_priority_active():
+    return time.time() < _routine_priority_until
+
+def set_routine_priority(mins=3):
+    global _routine_priority_until
+    _routine_priority_until = time.time() + mins * 60
+    print(f"[LED] 루틴 우선권 {mins}분 활성화")
+
+ 
+def hex_to_rgb(hexstr):
+    hexstr = hexstr.lstrip('#')
+    return tuple(int(hexstr[i:i+2], 16) for i in (0, 2, 4))
+
+def _map(x, in_min, in_max, out_min, out_max):
+    return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+
+def set_led_rgb(r, g, b, brightness=100):
+    """0~255의 RGB와 밝기(0~100)로 PWM 적용"""
+    r_dc = _map(r, 0, 255, 0, brightness)
+    g_dc = _map(g, 0, 255, 0, brightness)
+    b_dc = _map(b, 0, 255, 0, brightness)
+    RED.ChangeDutyCycle(r_dc)
+    GREEN.ChangeDutyCycle(g_dc)
+    BLUE.ChangeDutyCycle(b_dc)
+    print(f"[LED] 적용: R={r_dc}, G={g_dc}, B={b_dc}, 밝기={brightness}")
+
+def apply_led_status(led_data):
+    """서버에서 LED 정보 받아 실제 적용"""
+    if is_routine_priority_active():
+        print("[LED] 루틴 우선권: 서버 갱신 무시")
+        return
+
+    color = led_data.get("color", "#FFFFFF")
+    brightness = led_data.get("brightness", 100)
+    status = led_data.get("status", "on")
+
+    if status == "off":
+        set_led_rgb(0, 0, 0, 0)
+        print("[LED] 꺼짐")
+        return
+
+    try:
+        r, g, b = hex_to_rgb(color)
+        set_led_rgb(r, g, b, brightness)
+        print(f"[LED] 적용: color={color}, brightness={brightness}, status={status}")
+    except Exception as e:
+        print("[LED][ERROR] 색상 변환 실패:", e)
+
+def set_led(color="#FFFFFF", brightness=100, status="on"):
+    """직접 LED 조작(루틴 등에서 호출)"""
+    if status == "off":
+        set_led_rgb(0, 0, 0, 0)
+        print("[LED] 꺼짐")
+        return
+
+    try:
+        r, g, b = hex_to_rgb(color)
+        set_led_rgb(r, g, b, brightness)
+        print(f"[LED] 직접제어: color={color}, brightness={brightness}, status={status}")
+    except Exception as e:
+        print("[LED][ERROR] 직접제어 변환 실패:", e)
+
+ 

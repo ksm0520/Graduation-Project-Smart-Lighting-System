@@ -1,0 +1,55 @@
+import requests
+from datetime import datetime
+
+API_BASE = "https://graduation-project-smart-lighting-system-production.up.rail>
+
+def get_routines():
+    """루틴 전체 조회"""
+    resp = requests.get(f"{API_BASE}/routine", timeout=5)
+    return resp.json()
+
+def post_routine(name, time, enabled, actions):
+    """루틴 추가"""
+    payload = {
+        "name": name,
+        "time": time,
+        "enabled": enabled,
+        "actions": actions
+    }
+    resp = requests.post(f"{API_BASE}/routine", json=payload, timeout=5)
+    return resp.json()
+
+def delete_routine(routine_id):
+    """루틴 삭제"""
+    resp = requests.delete(f"{API_BASE}/routine/{routine_id}", timeout=5)
+    return resp.status_code
+
+def check_and_run_routines(routines):
+    """
+    루틴 목록 받아서, 현재 시간에 맞는 루틴이 있으면 실제 동작 실행(LED/음악 등)
+    routines: get_routines() 결과(리스트)
+    """
+    now = datetime.now().strftime("%H:%M")
+    for routine in routines:
+        if routine.get("enabled") and routine.get("time") == now:
+            print(f"[ROUTINE] 실행: {routine.get('name')}")
+            actions = routine.get("actions", {})
+            # 실제 동작 예시 (led_control, music_control에서 import 필요)
+            light = actions.get("light")
+            music = actions.get("music")
+            if light:
+                from led_control import set_led
+                print(f"  [루틴] LED: {light}")
+                set_led(
+                    color=light.get("color", "#FFFFFF"),
+                    brightness=light.get("brightness", 100),
+                    status="on"
+                )
+            if music and music.get("status") == "on":
+                from music_control import play_music
+                print(f"  [루틴] 음악 재생: {music}")
+                play_music(music.get("mode", "classic"))
+
+ 
+
+

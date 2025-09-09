@@ -1,0 +1,45 @@
+import json
+import os
+
+SETTINGS_FILE = "/home/hang/my_smart_home/user_settings.json"
+
+def save_settings(settings: dict):
+    """현재 세팅값을 json 파일로 저장"""
+    try:
+        with open(SETTINGS_FILE, "w", encoding="utf-8") as f:
+            json.dump(settings, f, ensure_ascii=False, indent=2)
+        print(f"[USER_SETTINGS] 세팅 저장 완료 ({SETTINGS_FILE})")
+    except Exception as e:
+        print("[USER_SETTINGS][ERROR] 저장 실패:", e)
+
+def load_settings() -> dict:
+    """파일에서 세팅값을 불러와서 반환 (없으면 빈 dict)"""
+    if not os.path.exists(SETTINGS_FILE):
+        print(f"[USER_SETTINGS] 세팅 파일 없음 ({SETTINGS_FILE})")
+        return {}
+    try:
+        with open(SETTINGS_FILE, "r", encoding="utf-8") as f:
+            settings = json.load(f)
+        print("[USER_SETTINGS] 세팅 불러오기 성공")
+        return settings
+    except Exception as e:
+        print("[USER_SETTINGS][ERROR] 불러오기 실패:", e)
+        return {}
+
+def apply_settings(settings: dict):
+    """
+    불러온 세팅값을 실제 하드웨어/동작에 적용
+    예) music, led, alarm, routine 등
+    """
+    from music_control import play_music
+    from led_control import set_led
+    # 필요한 값만 사용
+    music = settings.get("music")
+    led = settings.get("led")
+    if music:
+        play_music(**music)
+    if led:
+        set_led(**led)
+    print("[USER_SETTINGS] 세팅 적용 완료")
+
+ 
