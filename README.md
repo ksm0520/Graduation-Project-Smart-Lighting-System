@@ -133,7 +133,7 @@
 
 # 💻 Tech Stack
 
-<div align="center">
+
 
 
 ### 📱 Frontend
@@ -159,7 +159,7 @@
 ![Notion](https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white)
 
-</div>
+
 <br><br>
 
 # 📊 Monitoring
