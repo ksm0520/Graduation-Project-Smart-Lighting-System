@@ -53,6 +53,8 @@
 - **음악 모드와 연동하여 조명과 음악을 동시에 설정 가능**
 - **사용자가 만든 루틴 설정을 QR 코드로 저장 및 공유 가능**
 - **QR 코드를 통해 다른 기기에서도 동일한 조명 설정을 불러오기 가능**
+<img width="500"  alt="image03" src="https://github.com/user-attachments/assets/99559c68-b754-438b-a5d2-ea70d39b0789" />
+<img width="500"  alt="image01" src="https://github.com/user-attachments/assets/12f19585-f03c-4a71-bf61-dd488a1f8771" />
 
 <br>
 
@@ -129,13 +131,18 @@
 </div>
 <br><br>
 
+# 💻 Tech Stack
+
+| Field | Technology of Use |
+|------|------------------|
+| **Frontend** | ![React Native](https://img.shields.io/badge/React_Native-20232A?logo=react&logoColor=61DAFB) ![Expo](https://img.shields.io/badge/Expo-000020?logo=expo&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white) ![NativeWind](https://img.shields.io/badge/NativeWind-38BDF8?logo=tailwindcss&logoColor=white) ![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white) ![React Navigation](https://img.shields.io/badge/React_Navigation-000000?logo=react&logoColor=white) |
+| **Server** | ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white) ![Express](https://img.shields.io/badge/Express-000000?logo=express&logoColor=white) |
+| **Database** | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white) |
+| **IoT / Hardware** | ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi-A22846?logo=raspberrypi&logoColor=white) |
+| **Tools** | ![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white) |
 
 
 # 💻 Tech Stack
-
-
-
-
 
 ### 📱 Frontend
 ![React Native](https://img.shields.io/badge/React_Native-20232A?logo=react&logoColor=61DAFB)
