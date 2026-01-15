@@ -4,7 +4,7 @@
 <h3><b>Smart Mood Lighting System with React Native & Raspberry Pi</b></h3><br>
 
 <!-- 대표 이미지가 있다면 링크 넣기 -->
-<img width="1503" src="https://github.com/user-attachments/assets/b490e97b-9ecd-4b93-9175-0db0b317be0c" alt="대표 이미지">
+<img width="800" src="https://github.com/user-attachments/assets/b490e97b-9ecd-4b93-9175-0db0b317be0c" alt="대표 이미지">
 
 
 <h3><b>조명, 음악, 자동 루틴, QR 공유까지 한 번에</b></h3>
