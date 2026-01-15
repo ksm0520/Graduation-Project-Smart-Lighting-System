@@ -131,15 +131,28 @@
 
 ## 💻 Tech Stack
 
-| 분야 | 기술 |
-|------|------|
-| Frontend | React Native (Expo), TypeScript, NativeWind, Axios, React Navigation, Expo AV, React Native QRCode SVG |
-| Backend | Express.js, TypeScript, pg, cors, uuid |
-| Database | PostgreSQL |
-| IoT / Hardware | Raspberry Pi 4, Python, WS2812 RGB LED, DS3231 RTC, ESP32, Voice Recognition Module |
-| Deployment | Railway, Node.js, Expo |
-| Tools | GitHub, Notion, Figma |
+### 📱 Frontend
+![React Native](https://simple-icon-badges.vercel.app/?i=react)
+![Expo](https://simple-icon-badges.vercel.app/?i=expo)
+![TypeScript](https://simple-icon-badges.vercel.app/?i=typescript)
+![NativeWind](https://simple-icon-badges.vercel.app/?i=tailwindcss)
+![Axios](https://simple-icon-badges.vercel.app/?i=axios)
+![React Navigation](https://simple-icon-badges.vercel.app/?i=reactnavigation)
+![React Native SVG](https://simple-icon-badges.vercel.app/?i=svg)
 
+### 🖥️ Server
+![Express](https://simple-icon-badges.vercel.app/?i=express)
+![Node.js](https://simple-icon-badges.vercel.app/?i=node.js)
+![PostgreSQL](https://simple-icon-badges.vercel.app/?i=postgresql)
+
+### 🔌 IoT / Hardware
+![Python](https://simple-icon-badges.vercel.app/?i=python)
+![Raspberry Pi](https://simple-icon-badges.vercel.app/?i=raspberrypi)
+
+### 🧰 Tools
+![GitHub](https://simple-icon-badges.vercel.app/?i=github)
+![Notion](https://simple-icon-badges.vercel.app/?i=notion)
+![Figma](https://simple-icon-badges.vercel.app/?i=figma)
 
 
 # 💻 Tech Stack
