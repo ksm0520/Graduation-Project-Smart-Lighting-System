@@ -174,46 +174,6 @@
 <code>
 🗂️App
 ┣ 📂android
-┃ ┣ 📂app
-┃ ┃ ┣ 📂src
-┃ ┃ ┃ ┣ 📂debug
-┃ ┃ ┃ ┃ ┗ 📃AndroidManifest.xml
-┃ ┃ ┃ ┣ 📂main
-┃ ┃ ┃ ┃ ┣ 📂java
-┃ ┃ ┃ ┃ ┃ ┗ 📂com
-┃ ┃ ┃ ┃ ┃   ┗ 📂ksm0520
-┃ ┃ ┃ ┃ ┃     ┗ 📂App
-┃ ┃ ┃ ┃ ┃       ┣ 📃MainActivity.kt
-┃ ┃ ┃ ┃ ┃       ┗ 📃MainApplication.kt
-┃ ┃ ┃ ┃ ┣ 📂res
-┃ ┃ ┃ ┃ ┃ ┣ 📂drawable
-┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-hdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-mdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-xhdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-xxhdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-xxxhdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-anydpi-v26
-┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-hdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-mdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-xhdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-xxhdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-xxxhdpi
-┃ ┃ ┃ ┃ ┃ ┣ 📂values
-┃ ┃ ┃ ┃ ┃ ┗ 📂values-night
-┃ ┃ ┃ ┃ ┗ 📃AndroidManifest.xml
-┃ ┃ ┃ ┗ 📃AndroidManifest.xml
-┃ ┃ ┣ 📃build.gradle
-┃ ┃ ┣ 📃debug.keystore
-┃ ┃ ┗ 📃proguard-rules.pro
-┃ ┣ 📂gradle
-┃ ┃ ┗ 📂wrapper
-┃ ┃   ┣ 📃gradle-wrapper.jar
-┃ ┃   ┗ 📃gradle-wrapper.properties
-┃ ┣ 📃build.gradle
-┃ ┣ 📃gradle.properties
-┃ ┣ 📃gradlew
-┃ ┣ 📃gradlew.bat
-┃ ┗ 📃settings.gradle
 ┣ 📂api
 ┃ ┗ 📃api.ts
 ┣ 📂assets
