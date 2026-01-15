@@ -4,7 +4,7 @@
 <h3><b>Smart Mood Lighting System with React Native & Raspberry Pi</b></h3><br>
 
 <!-- 대표 이미지가 있다면 링크 넣기 -->
-<img width="800" src="https://github.com/user-attachments/assets/b490e97b-9ecd-4b93-9175-0db0b317be0c" alt="대표 이미지">
+<img width="700" src="https://github.com/user-attachments/assets/b490e97b-9ecd-4b93-9175-0db0b317be0c" alt="대표 이미지">
 
 
 <h3><b>조명, 음악, 자동 루틴, QR 공유까지 한 번에</b></h3>
@@ -13,9 +13,7 @@
 
 <div align="center">
 <p>
-  📌 이 프로젝트는 모바일 앱으로 LED 무드등을 제어하고,
-  사용자 생활 패턴에 맞춰 자동화 루틴과 음악 연동 기능을 제공하는
-  IoT 기반 스마트 무드등 시스템입니다.
+  📌 이 프로젝트는 모바일 앱으로 LED 무드등을 제어하고,사용자 생활 패턴에 맞춰 자동화 루틴과 음악 연동 기능을 제공하는  IoT 기반 스마트 무드등 시스템입니다.
 </p>
 
 <p>
