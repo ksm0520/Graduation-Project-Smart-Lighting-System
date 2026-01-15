@@ -31,7 +31,7 @@
 # 📖 Table of contents
 * [Introduction](#-introduction)
 * [Demo](#-demo)
-* [API](#-api)
+* [API Endpoints](#-api-endpoints)
 * [System Architecture](#-system-architecture)
 * [Tech Stack](#-tech-stack)
 * [Directory Structure](#-directory-structure)
@@ -97,10 +97,8 @@
 
 <br>
 
-# 📗 API
-<img width="1503" src="https://github.com/user-attachments/assets/bf878657-839e-4c39-9e44-7aa49bfe750e" alt="API 이미지">
 
-### 📚 API Endpoints
+# 📚 API Endpoints
 
 | 기능 영역 | Method | Endpoint | 설명 |
 |-----------|--------|----------|------|
@@ -122,16 +120,26 @@
 <br><br>
 
 # 🛠 ️System Architecture <a name="-system-architecture"></a>
+
+다음은 본 스마트 무드등 시스템의 전체 구조입니다.
+모바일 앱 → 서버 API → 하드웨어 제어 모듈로 이어지는 흐름을 보여줍니다.
+
 <div align="center">
-  <img align="center" width="1000" src="https://github.com/user-attachments/assets/1057e43f-0e78-483f-8942-46b6e5d5aca8">
+  <img align="center" width="1000" src="https://github.com/user-attachments/assets/6288bfa4-7640-42ad-805e-0d2d2dab98f6">
 </div>
 <br><br>
 
-# 🔑 ERD
-<div align="center">
-  <img width="1000" src="https://github.com/user-attachments/assets/b15b3f76-c856-40fb-961b-90f7473f1fef">
-</div>
-<br><br>
+## 💻 Tech Stack
+
+| 분야 | 기술 |
+|------|------|
+| Frontend | React Native (Expo), TypeScript, NativeWind, Axios, React Navigation, Expo AV, React Native QRCode SVG |
+| Backend | Express.js, TypeScript, pg, cors, uuid |
+| Database | PostgreSQL |
+| IoT / Hardware | Raspberry Pi 4, Python, WS2812 RGB LED, DS3231 RTC, ESP32, Voice Recognition Module |
+| Deployment | Railway, Node.js, Expo |
+| Tools | GitHub, Notion, Figma |
+
 
 
 # 💻 Tech Stack
