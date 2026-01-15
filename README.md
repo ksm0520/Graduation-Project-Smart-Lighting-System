@@ -14,7 +14,9 @@
 <div align="center">
 <p>
   이 프로젝트는 모바일 앱으로 LED 무드등을 제어하고,사용자 생활 패턴에 맞춰 자동화 루틴과 음악 연동 기능을 제공하는  IoT 기반 스마트 무드등 시스템입니다.
-    모바일 앱(React Native), 서버(Express + PostgreSQL),
+  
+   
+   모바일 앱(React Native), 서버(Express + PostgreSQL),
   그리고 Raspberry Pi 하드웨어가 유기적으로 연결되어
   실제 조명 제어와 자동화가 이루어집니다.
 </p>
@@ -31,9 +33,7 @@
 * [Demo](#-demo)
 * [API](#-api)
 * [System Architecture](#-system-architecture)
-* [ERD](#-erd)
 * [Tech Stack](#-tech-stack)
-* [Monitoring](#-monitoring)
 * [Directory Structure](#-directory-structure)
 * [How to start](#-how-to-start)
 * [Team Members](#-team-members)
@@ -41,109 +41,83 @@
 <br>
 
 # 📣 Introduction
-### URL
-> 🗝️ [AILIBI](https://AILIBI.link) 
 
-### Medium
-> 🔎 [AILIBI Medium](https://medium.com/@pgc0419/project-ai%EA%B0%80-%EB%A7%8C%EB%93%A4%EC%96%B4-%EC%A3%BC%EB%8A%94-%ED%83%90%EC%A0%95-%EC%8B%9C%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98-%EC%84%9C%EB%B9%84%EC%8A%A4-ailibi-43e02a68a745) &nbsp;
+
 
 <br>
 
-- **AI 기반 1인용 탐정 시뮬레이션**
-- **AI + ALIBl(형사 사건이 발생한 시간에 용의자가 그 범죄 현장에 있지 않았다는 증명)=AILIBI**
-- **사용자가 사건 종류,장소,시간을 입력하면 AI(GPT-4)가 매번 새로운 시나리오,용의자,증거를 생성**
-- **사용자는 시나리오의 탐정이 되어 용의자를 심문하고 증거를 탐색**
-- **진범을 찾아내면 승리**
-- **플레이 기록들 열람 가능**
+- **IoT 기반 스마트 무드등 시스템**
+- **React Native 앱과 Raspberry Pi 하드웨어가 연결되어 동작**
+- **사용자가 모바일 앱에서 LED 색상, 밝기, 전원 ON/OFF 조작 가능**
+- **시간 기반 자동화 루틴 및 알람 기능 제공**
+- **음악 모드와 연동하여 조명과 음악을 동시에 설정 가능**
+- **사용자가 만든 루틴 설정을 QR 코드로 저장 및 공유 가능**
+- **QR 코드를 통해 다른 기기에서도 동일한 조명 설정을 불러오기 가능**
 
 <br>
 
 # 🕺🏻 Demo
-### Innit Animation
-> AILIBI에 접속하면 가장 먼저 보이는 화면입니다.
+### Home 
+> 앱을 실행하면 가장 먼저 보이는 화면입니다.<br>
+중앙의 전원 버튼을 눌러 LED를 켜거나 끌 수 있고,
+하단 메뉴를 통해 각 기능으로 이동할 수 있습니다.
 <br>
-<img align="center" width="1000" alt="Onboarding" src="https://github.com/user-attachments/assets/dd639618-abbe-4ee2-8907-4adfa1d74c6c">
+<img align="center" width="600" alt="Onboarding" src="https://github.com/user-attachments/assets/a366e0a3-cb0f-4181-bc98-bddc7f7883c8">
 <br><br>
 
-### Login/Register
-> E-mail 기반 로그인 및 회원가입으로 손쉽게 로그인 할 수 있습니다.
+### Light Control
+> LED 조명 세부 제어 화면입니다.<br>
+사용자는 색상 선택, 밝기 조절, 알람 설정 등을 수행할 수 있습니다.
 <br>
-<img align="center" width="1000" alt="Login & Sign up" src="https://github.com/user-attachments/assets/1487ef46-1858-4be6-b8a2-51f7d2f5866e">
+<img align="center" width="600" alt="Login & Sign up" src="https://github.com/user-attachments/assets/492bfbd3-74ef-4b79-8367-7bdddb3af8ce">
 <br><br>
 
-### Main
-> 성공적인 로그인 이후 게임 플레이를 위한 메인 페이지로 이동합니다.
+### Music 
+> 음악 모드를 선택하고 제어할 수 있는 화면입니다.<br>
+4가지 음악 모드 중 선택 가능하며, 음악을 재생/정지할 수 있습니다.
 <br>
-<img align="center" width="1000" alt="Login & Sign up" src="https://github.com/user-attachments/assets/b44f2bc8-aada-49f1-a099-9112e6edb310">
+<img align="center" width="600" alt="Login & Sign up" src="https://github.com/user-attachments/assets/eca115fb-9173-443e-9c45-f3896bbd5c70">
 <br><br>
 
-### Make-Scenario
-> 사용자가 탐정 스토리의 주요 배경과 사건을 설정하는 페이지입니다.<br>
-> 사건의 종류, 시간, 장소를 선택할 수 있습니다.
+### Routine
+> 루틴 설정 화면입니다.<br>
+사용자는 루틴 이름, 시간, 음악 모드, LED 색상 등을 지정하여 자동화 루틴을 생성할 수 있습니다.
 <br>
-<img align="center" width="1000" alt="Login & Sign up" src="https://github.com/user-attachments/assets/33b7c33a-f3d0-49c6-a216-87081019573f">
+<img align="center" width="600" alt="Login & Sign up" src="https://github.com/user-attachments/assets/e1ca0787-d22f-48bf-805b-d961b171617c">
 <br><br>
 
-### Loading
-> 사용자 입력을 기반으로 AI의 시나리오 생성을 기다리는 페이지입니다.<br>
-> 평균적으로 약 1분 내외의 시간이 소요되며, 기다림을 달래 줄 2개의 미니게임(슈팅 게임, 스도쿠)이 준비되어 있습니다.
+### Share QR
+> 생성한 루틴을 QR 코드로 저장하거나 공유하는 화면입니다.<br>
+또한 다른 기기에서 QR 코드를 입력하여 루틴을 불러올 수 있습니다.
 <br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/a9e54428-3c14-432e-82ba-d698e32e9146">
+<img align="center" width="600" alt="" src="https://github.com/user-attachments/assets/23348453-18d4-4956-b292-1b65c968b6d7">
 <br><br>
 
-### Initial-Statement
-> 용의자들의 초기 진술을 확인할 수 있는 페이지입니다.
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/a5430541-5017-43d2-97f9-47ddf8518f11">
-<br><br>
 
-### Scenario & Evidence
-> 생성된 시나리오와 증거를 탐색할 수 있는 페이지 입니다.<br>
-> 추리 노트를 사용하여, 사용자만의 추리 내용을 작성할 수 있습니다.
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/1fc8ab99-0bd8-42cd-90d6-ba3e287e6fec"><br><br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/f3c609bb-29cb-4714-9152-d39f017aece2">
-<br><br>
-  
-### Suspect
-> 용의자 목록을 확인할 수 있는 페이지입니다.
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/a1c11bd9-ee42-4f69-9b86-da4e547f7240">
-<br><br>
-
-### Interrogation
-> AI와 Websocket을 기반으로 용의자를 심문하는 페이지입니다.<br>
-> STT와 TTS로 보다 몰입도 높은 플레이를 진행할 수 있습니다.
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/716ff1ab-8d4d-44ab-b2ed-f13364d42712">
-<br><br>
-
-### Choose
-> 앞서 추리한 내용을 기반으로 범인을 지목하는 페이지 입니다.<br>
-> 사용자의 선택에 따라 문장이 달라집니다.<br>
-> 성공 — You got it right!<br>
-> 실패 — Are you serious?
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/91a1e7a1-c103-4657-860f-6a7f004573d1">
-<br><br>
-
-### Ending-Credit
-> 사건이 종료된 이후의 페이지로, 플레이 결과와 크레딧 화면을 볼 수 있습니다.
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/b3b5ce61-0192-443b-b117-06fd9cf4103d">
-<br><br>
-
-### History
-> 사용자가 플레이 했던 내역들을 자세하게 확인할 수 있습니다.
-<br>
-<img align="center" width="1000" alt="" src="https://github.com/user-attachments/assets/200c9fb4-e6a9-4ba2-89d7-fe4bcc0b7a84">
-<br><br>
 
 <br>
 
 # 📗 API
 <img width="1503" src="https://github.com/user-attachments/assets/bf878657-839e-4c39-9e44-7aa49bfe750e" alt="API 이미지">
 
+### 📚 API Endpoints
+
+| 기능 영역 | Method | Endpoint | 설명 |
+|-----------|--------|----------|------|
+| LED 상태 조회 | GET | /led | 현재 LED 상태 조회 (색상, 밝기, 전원 포함) |
+| LED 설정 | POST | /led | LED 설정 (전원 ON/OFF, 색상, 밝기 조절) |
+| 음악 상태 조회 | GET | /music | 현재 음악 상태 조회 |
+| 음악 재생 | POST | /music/play | 음악 재생 (모드: classic, rain, study, sleep) |
+| 음악 정지 | POST | /music/stop | 음악 정지 |
+| 음악 볼륨 조절 | POST | /music/volume | 음악 볼륨 조절 (0~100) |
+| 알람 목록 조회 | GET | /alarm | 현재 알람 목록 조회 |
+| 알람 추가 | POST | /alarm | 알람 추가 (status, time) |
+| 알람 삭제 | DELETE | /alarm/:id | 특정 알람 삭제 |
+| 루틴 목록 조회 | GET | /routine | 전체 루틴 조회 |
+| 루틴 추가 | POST | /routine | 루틴 추가 (name, time, enabled, actions) |
+| 루틴 삭제 | DELETE | /routine/:id | 특정 루틴 삭제 |
+| QR 코드 export | POST | /qr/export | 루틴 리스트를 QR 코드로 생성 |
+| QR 코드 import | POST | /qr/import | QR 코드로 받은 루틴 저장 |
 
 <br><br>
 
