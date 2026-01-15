@@ -136,6 +136,7 @@
 
 
 
+
 ### 📱 Frontend
 ![React Native](https://img.shields.io/badge/React_Native-20232A?logo=react&logoColor=61DAFB)
 ![Expo](https://img.shields.io/badge/Expo-000020?logo=expo&logoColor=white)
@@ -143,7 +144,6 @@
 ![NativeWind (Tailwind)](https://img.shields.io/badge/NativeWind-38BDF8?logo=tailwindcss&logoColor=white)
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white)
 ![React Navigation](https://img.shields.io/badge/React_Navigation-000000?logo=react&logoColor=white)
-![React Native SVG](https://img.shields.io/badge/React_Native_SVG-000000?logo=svg&logoColor=white)
 
 ### 🖥️ Server & DB
 ![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)
@@ -163,85 +163,12 @@
 <br><br>
 
 # 📊 Monitoring
-<div align="center">
-  <h3 align="left">Prometheus & Grafana</h3>
-  <table>
-        <tr>
-            <th colspan="2">Django</th>
-        </tr>
-        <tr>
-            <td><img src="https://github.com/user-attachments/assets/dfe25a06-b23d-41b4-a95e-2a7f66769b16" alt="Django"></td>
-            <td><img src="https://github.com/user-attachments/assets/59e892d8-76d5-463f-90c2-a025d8faf23b" alt="Django2"></td>
-        </tr>
-        <tr>
-            <th colspan="2">Celery</th>
-        </tr>
-        <tr>
-            <td><img src="https://github.com/user-attachments/assets/074048e6-4ece-43f9-9800-2f2d523f2930" alt="Celery"></td>
-            <td><img src="https://github.com/user-attachments/assets/8d67960d-b60e-4a37-9597-7eabeed8c6fb" alt="Celery2"></td>
-        </tr>
-        <tr>
-            <th colspan="2">cAdvisor</th>
-        </tr>
-        <tr>
-            <td><img src="https://github.com/user-attachments/assets/5c995407-38a8-4949-8807-c6678e15adea" alt="cAdvisor"></td>
-            <td><img src="https://github.com/user-attachments/assets/8ec92d68-418e-4d97-a288-88bf7b0e4bac" alt="cAdvisor2"></td>
-        </tr>
-        <tr>
-            <th colspan="2">Node_Exporter</th>
-        </tr>
-        <tr>
-            <td><img src="https://github.com/user-attachments/assets/ecd13865-d1f4-4f34-af30-2d91b081b7b8"></td>
-            <td><img src="https://github.com/user-attachments/assets/cff8c04a-700c-45ad-ad84-017d343d2e3d" alt="Node Exporter2"></td>
-        </tr>
-        <tr>
-            <th colspan="2">RabbitMQ</th>
-        </tr>
-        <tr>
-            <td><img src="https://github.com/user-attachments/assets/e41beaed-0e21-4f7d-82b0-e86a8a6b9f37"></td>
-            <td><img src="https://github.com/user-attachments/assets/1dd07d64-3548-476f-a68a-7b5e613b49cc" alt="Node Exporter2"></td>
-        </tr>
-        <tr>
-          <th>Nginx_Exporter</th>
-          <th>Redis</th>
-        </tr>
-        <tr>
-          <td><img src="https://github.com/user-attachments/assets/ef00a11f-e77a-40a2-ad32-b19d67b65e2a"></td>
-          <td><img src="https://github.com/user-attachments/assets/67a6e2fb-fa01-4172-9a86-a0b17a847379"></td>
-        </tr>
-    </table>
-  <br>
-</div>
-<br>
-  
-  <h3 align="left">Cloud Flare</h3>
-<table>
-  <tr>
-      <th colspan="2">Frontend</th>
-  </tr>
-  <tr>
-      <td><img src="https://github.com/user-attachments/assets/77b5c76c-1567-4e63-b5db-4335749167cb"></td>
-      <td><img src="https://github.com/user-attachments/assets/e9429a44-14d5-4711-9124-0a9a83c5abc9" alt="Node Exporter2"></td>
-  </tr>
-</table>
+
 
 <br>
 
 
-# 🔧 Logging
-<div align="center">
-  <h3 align="left">Loki</h3>
-  <table>
-        <tr>
-            <th colspan="2">Nginx</th>
-        </tr>
-        <tr>
-            <td><img src="https://github.com/user-attachments/assets/fa352ece-f6f7-4862-ba17-22ed53a2378b" alt="Django"></td>
-            <td><img src="https://github.com/user-attachments/assets/e9749025-fd86-4203-aee0-30713e96ad5f" alt="Django2"></td>
-        </tr>
-    </table>
-</div>
-<br>
+
 
 # 📂 Directory Structure
 
