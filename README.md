@@ -37,7 +37,7 @@
 * [Hardware Components](#-hardware-components)
 * [Directory Structure](#-directory-structure)
 * [How to start](#-how-to-start)
-* [Team Members](#-team-members)
+
 
 <br>
 
@@ -169,196 +169,122 @@
 # 📂 Directory Structure
 
 <details>
-  <summary>AILIBI-Backend</summary>
+  <summary>App (React Native Mobile App)</summary>
 <pre>
 <code>
-🗂️AILIBI-Backend
-┣ 📂.github
-┃ ┣ 📂ISSUE_TEMPLATE
-┃ ┗ 📂workflows
-┣ 📂Backend
-┃ ┣ 📃__init__.py
-┃ ┣ 📃asgi.py
-┃ ┣ 📃celery.py
-┃ ┣ 📃settings.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃wsgi.py
-┣ 📂alertmanager
-┃ ┗ 📃alertmanager.yml
-┣ 📂chat
-┃ ┣ 📂migrations
-┃ ┣ 📂templates
-┃ ┣ 📃Serializers.py
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃consumers.py
-┃ ┣ 📃models.py
-┃ ┣ 📃routing.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂evidence
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃models.py
-┃ ┣ 📃serializers.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂grafana/data
-┃ ┣ 📂alerting/1
-┃ ┗ 📃grafana.db
-┣ 📂health
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂llm
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂prometheus
-┃ ┣ 📃alert-rules.yml
-┃ ┗ 📃prometheus.yml
-┣ 📂promtail
-┃ ┗ 📃config.yaml
-┣ 📂scenario
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃models.py
-┃ ┣ 📃scenario_urls.py
-┃ ┣ 📃serializers.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂staticfiles
-┃ ┣ 📂admin
-┃ ┣ 📂drf-yasg
-┃ ┗ 📂rest_framework
-┣ 📂stt
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂suspect
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃models.py
-┃ ┣ 📃serializers.py
-┃ ┣ 📃suspect_urls.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂tts
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃tasks.py
-┃ ┣ 📃urls.py
-┃ ┗ 📃views.py
-┣ 📂user
-┃ ┣ 📂migrations
-┃ ┣ 📃__init__.py
-┃ ┣ 📃admin.py
-┃ ┣ 📃apps.py
-┃ ┣ 📃models.py
-┃ ┣ 📃serializers.py
-┃ ┣ 📃tests.py
-┃ ┣ 📃urls.py
-┃ ┣ 📃users_urls.py
-┃ ┗ 📃views.py
-┣ 📃.gitattributes
-┣ 📃.gitignore
-┣ 📃Dockerfile
-┣ 📃README.md
-┣ 📃README.md
-┣ 📃docker-compose-blue.yml
-┣ 📃docker-compose-common.yml
-┣ 📃docker-compose-green.yml
-┣ 📃grafana.ini
-┣ 📃manage.py
-┣ 📃nginx.conf
-┣ 📃requirements.txt
-┗ 📃start_celery_flower.sh
+🗂️App
+┣ 📂android
+┃ ┣ 📂app
+┃ ┃ ┣ 📂src
+┃ ┃ ┃ ┣ 📂debug
+┃ ┃ ┃ ┃ ┗ 📃AndroidManifest.xml
+┃ ┃ ┃ ┣ 📂main
+┃ ┃ ┃ ┃ ┣ 📂java
+┃ ┃ ┃ ┃ ┃ ┗ 📂com
+┃ ┃ ┃ ┃ ┃   ┗ 📂ksm0520
+┃ ┃ ┃ ┃ ┃     ┗ 📂App
+┃ ┃ ┃ ┃ ┃       ┣ 📃MainActivity.kt
+┃ ┃ ┃ ┃ ┃       ┗ 📃MainApplication.kt
+┃ ┃ ┃ ┃ ┣ 📂res
+┃ ┃ ┃ ┃ ┃ ┣ 📂drawable
+┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-hdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-mdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-xhdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-xxhdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂drawable-xxxhdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-anydpi-v26
+┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-hdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-mdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-xhdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-xxhdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂mipmap-xxxhdpi
+┃ ┃ ┃ ┃ ┃ ┣ 📂values
+┃ ┃ ┃ ┃ ┃ ┗ 📂values-night
+┃ ┃ ┃ ┃ ┗ 📃AndroidManifest.xml
+┃ ┃ ┃ ┗ 📃AndroidManifest.xml
+┃ ┃ ┣ 📃build.gradle
+┃ ┃ ┣ 📃debug.keystore
+┃ ┃ ┗ 📃proguard-rules.pro
+┃ ┣ 📂gradle
+┃ ┃ ┗ 📂wrapper
+┃ ┃   ┣ 📃gradle-wrapper.jar
+┃ ┃   ┗ 📃gradle-wrapper.properties
+┃ ┣ 📃build.gradle
+┃ ┣ 📃gradle.properties
+┃ ┣ 📃gradlew
+┃ ┣ 📃gradlew.bat
+┃ ┗ 📃settings.gradle
+┣ 📂api
+┃ ┗ 📃api.ts
+┣ 📂assets
+┃ ┣ 📂img
+┃ ┃ ┗ 📃Background.png
+┃ ┣ 📂sounds
+┃ ┃ ┗ 📃BtS.mp3
+┃ ┣ 📃adaptive-icon.png
+┃ ┣ 📃favicon.png
+┃ ┣ 📃icon.png
+┃ ┗ 📃splash-icon.png
+┣ 📂navigation
+┃ ┗ 📃StackNavigator.tsx
+┣ 📂screens
+┃ ┣ 📃HomeScreen.tsx
+┃ ┣ 📃LightControlScreen.tsx
+┃ ┣ 📃MusicScreen.tsx
+┃ ┣ 📃RoutineScreen.tsx
+┃ ┗ 📃ShareQRScreen.tsx
+┣ 📃App.tsx
+┣ 📃app.json
+┣ 📃babel.config.ts
+┣ 📃global.d.ts
+┣ 📃index.ts
+┣ 📃input.css
+┣ 📃package.json
+┣ 📃package-lock.json
+┣ 📃postcss.config.js
+┣ 📃tailwind.config.js
+┣ 📃tailwind.css
+┣ 📃tailwind.json
+┗ 📃tsconfig.json
 </code>
 </pre>
 </details>
+
 <details>
-    <summary>AILIBI-Frontend</summary>
+  <summary>Server (Express Backend)</summary>
 <pre>
 <code>
-🗂️AILIBI-Frontend
-┣ 📂.github
-┃ ┣ 📂ISSUE_TEMPLATE
-┃ ┗ 📂workflows
-┣ 📂public
-┃ ┣ 📂fonts
-┃ ┣ 📂images
-┃ ┣ 📂mp4
-┃ ┣ 📂sounds
-┃ ┣ 📃logo.png
-┃ ┗ 📃vite.svg
+🗂️Server
 ┣ 📂src
-┃ ┣ 📂assets
-┃ ┃ ┗ 📃react.svg
-┃ ┣ 📂components
-┃ ┃ ┣ 📃EndingPage.css
-┃ ┃ ┣ 📃LogInPage.css
-┃ ┃ ┣ 📃SignupBox.css
-┃ ┃ ┗ 📃VideoPage.css
-┃ ┣ 📂hooks
-┃ ┃ ┣ 📃UserContext.tsx
-┃ ┃ ┗ 📃axiosInstance.ts
-┃ ┣ 📂mocks
-┃ ┃ ┗ 📃webSocketService.ts
-┃ ┣ 📂pages
-┃ ┃ ┣ 📃ChattingPage.tsx
-┃ ┃ ┣ 📃ChoosePage.tsx
-┃ ┃ ┣ 📃EndingPage.tsx
-┃ ┃ ┣ 📃EvidencePage.tsx
-┃ ┃ ┣ 📃GamePage1.tsx
-┃ ┃ ┣ 📃HistoryNote.tsx
-┃ ┃ ┣ 📃HistoryPopUp.tsx
-┃ ┃ ┣ 📃InitChatPage.tsx
-┃ ┃ ┣ 📃LeftPage.tsx
-┃ ┃ ┣ 📃LoadingScenarioPage.tsx
-┃ ┃ ┣ 📃LogInPage.tsx
-┃ ┃ ┣ 📃LoginBox.tsx
-┃ ┃ ┣ 📃MainAudioContext.tsx
-┃ ┃ ┣ 📃MainPage.tsx
-┃ ┃ ┣ 📃MakeScenarioPage.tsx
-┃ ┃ ┣ 📃NotePage.tsx
-┃ ┃ ┣ 📃PlayAudioContext.tsx
-┃ ┃ ┣ 📃PlayHistoryPage.tsx
-┃ ┃ ┣ 📃PlayPage.tsx
-┃ ┃ ┣ 📃ResultLoadingPage.tsx
-┃ ┃ ┣ 📃RightPage.tsx
-┃ ┃ ┣ 📃SignupBox.tsx
-┃ ┃ ┣ 📃SudokuGame.tsx
-┃ ┃ ┣ 📃SuspectPage.tsx
-┃ ┃ ┣ 📃TTSService.tsx
-┃ ┃ ┗ 📃vite-env.d.ts
-┃ ┣ 📂services
-┃ ┃ ┗ 📃vite-env.d.ts
-┃ ┣ 📃App.css
-┃ ┣ 📃App.tsx
-┃ ┣ 📃index.css
-┃ ┣ 📃main.tsx
-┃ ┗ 📃vite-env.d.ts
-┣ 📃.gitignore
-┣ 📃Dockerfile
-┣ 📃README.md
-┣ 📃docker-compose.yml
-┣ 📃eslint.config.js
-┣ 📃index.html
-┣ 📃package-lock.json
+┃ ┣ 📂routes
+┃ ┃ ┣ 📃alarm.ts
+┃ ┃ ┣ 📃led.ts
+┃ ┃ ┣ 📃music.ts
+┃ ┃ ┣ 📃qr.ts
+┃ ┃ ┗ 📃routine.ts
+┃ ┣ 📃db.ts
+┃ ┗ 📃index.ts
 ┣ 📃package.json
-┣ 📃postcss.config.cjs
-┣ 📃tailwind.config.js
-┣ 📃tsconfig.app.json
-┣ 📃tsconfig.json
-┣ 📃tsconfig.node.json
-┗ 📃vite.config.ts
+┣ 📃package-lock.json
+┗ 📃tsconfig.json
+</code>
+</pre>
+</details>
+
+<details>
+  <summary>Iot (Raspberry Pi Hardware Control)</summary>
+<pre>
+<code>
+🗂️Iot
+┣ 📃alarm_control.txt
+┣ 📃api_client.txt
+┣ 📃led_control.txt
+┣ 📃main.txt
+┣ 📃mic_control.txt
+┣ 📃music_control.txt
+┣ 📃routuine.txt
+┣ 📃user_setting.txt
+┗ 📃코드 전체적인 구성.txt
 </code>
 </pre>
 </details>
@@ -366,164 +292,56 @@
 
 # 🧐 How To Start
 
-### Backend 
-```
-git clone --recursive https://github.com/2024-Winter-Bootcamp-team-K/AILIBI-Backend.git
-```
-### env setting in the Backend folder
-* Backend/.env
-```
-DB_ENGINE=
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-DB_HOST=
-DB_PORT=
 
-OPENAI_API_KEY=
 
-NAVER_CLIENT_ID=
-NAVER_CLIENT_SECRET=
+### 1) Backend (Server)
 
-ELEVENLABS_API_KEY=
-ELEVENLABS_MODEL_ID=
-TASK_1_VOICE_ID=
-TASK_2_VOICE_ID=
-TASK_3_VOICE_ID=
+```bash
+git clone https://github.com/ksm0520/Graduation-Project-Smart-Lighting-System.git
+cd Graduation-Project-Smart-Lighting-System/Server
 ```
-### Run Docker
-```
-docker-compose -f docker-compose-common.yml -f docker-compose-blue.yml build
-docker-compose -f docker-compose-common.yml -f docker-compose-blue.yml up -d
-docker-compose -f docker-compose-common.yml -f docker-compose-blue.yml down
 
-docker-compose -f docker-compose-common.yml -f docker-compose-green.yml build
-docker-compose -f docker-compose-common.yml -f docker-compose-green.yml up -d
-docker-compose -f docker-compose-common.yml -f docker-compose-green.yml down
-```
-### Frontend
-```
-git clone --recursive https://github.com/2024-Winter-Bootcamp-team-K/AILIBI-Frontend.git
-```
-### Install
-```
-npm run dev
-```
-<br>
+#### Environment Setting
+Create `Server/.env` and add:
 
-# 👨‍👩‍👧‍👦 Team Members
-<table width="1000">
-<thead>
-</thead>
-<tbody>
+```env
+DATABASE_URL=postgresql://user:password@host:port/database
+PORT=3000
+```
 
-<tr>
-<th>Name</th>
-<td width="100" align="center">박근채</td>
-<td width="100" align="center">여상윤</td>
-<td width="100" align="center">박수용</td>
-<td width="100" align="center">김승민</td>
-<td width="100" align="center">이수연</td>
-<td width="100" align="center">박명남</td>
-</tr>
+#### Install & Run Backend
 
-<tr>
-<th>Profile</th>
-<td width="100" align="center">
-<a href="https://github.com/pgc0419">
-<img src="https://github.com/user-attachments/assets/fff119c4-3e90-4dd8-8118-4b177ef702b4" width="60" height="60">
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/Grassyeochi">
-<img src="https://github.com/user-attachments/assets/9224d530-4af5-445f-9bd2-7c3e93f5a8e9" width="60" height="60">
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/parksooyong03">
-<img src="https://github.com/user-attachments/assets/2a707357-62c8-4e35-8725-cdb4fb49fcde" width="60" height="60">
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/ksm0520">
-<img src="https://github.com/ksm0520.png" width="60" height="60">
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/URsuyeon">
-<img src="https://github.com/user-attachments/assets/daf7e881-fd52-4adc-8852-d8f2e20c530a" width="60" height="60">
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/myungnam1">
-<img src="https://github.com/user-attachments/assets/b39d58f3-f09c-4b58-a307-c8e97b6b098c" width="60" height="60">
-</a>
-</td>
-</tr>
+```bash
+npm install
+npm start
+```
 
-<tr>
-<th>Role</th>
-<td width="190" align="center">
-Leader<br>
-Full Stack<br>
-DevOps<br>
-Design<br>
-</td>
-<td width="190" align="center">
-Backend<br>
-DevOps<br>
-</td>
-<td width="190" align="center">
-Backend<br>
-DevOps<br>
-</td>
-<td width="190" align="center">
-Frontend<br>
-Design<br>
-</td>
-<td width="190" align="center">
-Frontend<br>
-Design<br>
-</td>
-<td width="190" align="center">
-Frontend<br>
-Design<br>
-</td>
+---
 
-<tr>
-<th>GitHub</th>
-<td width="100" align="center">
-<a href="https://github.com/pgc0419">
-<img src="http://img.shields.io/badge/pgc0419-green?style=social&logo=github"/>
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/Grassyeochi">
-<img src="http://img.shields.io/badge/Grassyeochi-green?style=social&logo=github"/>
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/parksooyong03">
-<img src="http://img.shields.io/badge/parksooyong03-green?style=social&logo=github"/>
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/ksm0520">
-<img src="http://img.shields.io/badge/ksm0520-green?style=social&logo=github"/>
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/URsuyeon">
-<img src="http://img.shields.io/badge/URsuyeon-green?style=social&logo=github"/>
-</a>
-</td>
-<td width="100" align="center">
-<a href="https://github.com/myungnam1">
-<img src="http://img.shields.io/badge/myungnam1-green?style=social&logo=github"/>
-</a>
-</td>
-</tr>
-</tbody>
-</table>
-<br><br><br><br>
+### 2) Mobile App (React Native)
+
+```bash
+cd ../App
+npm install
+npm start
+```
+
+
+
+
+---
+
+### 3) IoT (Raspberry Pi)
+
+```bash
+cd ../Iot
+pip install -r requirements.txt
+python main.py
+```
+
+#### Hardware Connection
+- Connect Raspberry Pi ↔ WS2812B RGB LED
+- Connect RTC module (DS3231)
+- Connect ESP32 & other sensors (if used)
+- Power adapter 연결
 
