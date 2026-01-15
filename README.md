@@ -13,14 +13,13 @@
 
 <div align="center">
 <p>
-  📌 이 프로젝트는 모바일 앱으로 LED 무드등을 제어하고,사용자 생활 패턴에 맞춰 자동화 루틴과 음악 연동 기능을 제공하는  IoT 기반 스마트 무드등 시스템입니다.
-</p>
-
-<p>
-  모바일 앱(React Native), 서버(Express + PostgreSQL),
+  이 프로젝트는 모바일 앱으로 LED 무드등을 제어하고,사용자 생활 패턴에 맞춰 자동화 루틴과 음악 연동 기능을 제공하는  IoT 기반 스마트 무드등 시스템입니다.
+    모바일 앱(React Native), 서버(Express + PostgreSQL),
   그리고 Raspberry Pi 하드웨어가 유기적으로 연결되어
   실제 조명 제어와 자동화가 이루어집니다.
 </p>
+
+
 </div>
 
 <br><br>
