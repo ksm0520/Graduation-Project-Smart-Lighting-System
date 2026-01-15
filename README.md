@@ -148,7 +148,7 @@
 
 # 📦 Hardware Components
 <img width="500"  alt="image03" src="https://github.com/user-attachments/assets/99559c68-b754-438b-a5d2-ea70d39b0789" />
-<img width="500"  alt="image01" src="https://github.com/user-attachments/assets/12f19585-f03c-4a71-bf61-dd488a1f8771" />
+<img width="490"  alt="image01" src="https://github.com/user-attachments/assets/12f19585-f03c-4a71-bf61-dd488a1f8771" />
 
 | Category | Component | Description |
 |---|---|---|
